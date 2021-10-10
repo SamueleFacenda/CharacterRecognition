@@ -11,6 +11,9 @@
     </padding>
 
     <Label text="Disegna una lettere" />
-   <Canvas height="200.0" styleClass="b" width="200.0"/>
-    <Button onAction="#onHelloButtonClick" text="invio" styleClass="btn,btn-primary"/>
+   <Canvas height="200.0" styleClass="b" width="200.0" fx:id="canva"/>
+    <HBox>
+        <Button onAction="#onButtonClick" text="invio" styleClass="btn,btn-primary"/>
+        <Button onAction="#onButtonClick" text="iclear" styleClass="btn,btn-danger"/>
+    </HBox>
 </VBox>
