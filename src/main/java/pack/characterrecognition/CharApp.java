@@ -12,9 +12,10 @@ public class CharApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(CharApp.class.getResource("view1.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 500, 500);
+        Scene scene = new Scene(fxmlLoader.load(), 300, 400);
         stage.setTitle("Character Recognition");
         scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
+        scene.getStylesheets().add("/Users/samu/IdeaProjects/CharacterRecognition/src/main/java/pack/characterrecognition/stile.css");
         stage.setScene(scene);
         stage.show();
     }
