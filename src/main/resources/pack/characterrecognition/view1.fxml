@@ -10,14 +10,16 @@
         <Insets bottom="5.0" left="20.0" right="20.0" top="20.0" />
     </padding>
 
-    <Label text="Disegna una lettere" />
-   <Canvas fx:id="canva" height="200.0" width="200.0" styleClass="myCanvas"/>
+    <Label text="Disegna una lettera" />
+    <Pane styleClass="panel-primary">
+   <Canvas fx:id="canva" height="200.0" width="200.0" />
+    </Pane>
     <HBox>
-        <Button onAction="#onButtonClick" styleClass="btn,btn-primary" text="invio">
+        <Button onAction="#invio" styleClass="btn,btn-primary" text="invio">
          <HBox.margin>
             <Insets right="50.0" />
          </HBox.margin></Button>
-        <Button alignment="CENTER_RIGHT" contentDisplay="CENTER" onAction="#onButtonClick" styleClass="btn,btn-danger" text="clear">
+        <Button alignment="CENTER_RIGHT" contentDisplay="CENTER" onAction="#clear" styleClass="btn,btn-danger" text="clear">
          <HBox.margin>
             <Insets left="50.0" />
          </HBox.margin></Button>

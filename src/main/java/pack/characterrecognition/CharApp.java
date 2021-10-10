@@ -5,8 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
-import org.kordamp.bootstrapfx.scene.layout.Panel;
+
 import java.io.IOException;
+import java.net.URL;
 
 public class CharApp extends Application {
     @Override
@@ -15,7 +16,6 @@ public class CharApp extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 300, 400);
         stage.setTitle("Character Recognition");
         scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
-        scene.getStylesheets().add("/Users/samu/IdeaProjects/CharacterRecognition/src/main/java/pack/characterrecognition/stile.css");
         stage.setScene(scene);
         stage.show();
     }
