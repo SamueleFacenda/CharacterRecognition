@@ -11,6 +11,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.text.TextAlignment;
+import pack.characterrecognition.geometry.Vector;
 
 public class Controller {
     @FXML
@@ -26,6 +27,7 @@ public class Controller {
         disegno.clearRect(0, 0, canva.getWidth(), canva.getHeight());
         disegno.setTextAlign(TextAlignment.CENTER);
         disegno.setTextBaseline(VPos.CENTER);
+        Vector v=new Vector(0,0,2,2);
         disegno.fillText(
                 "Carattere: "+cr.getChar(),
                 Math.round(canva.getWidth() /2 ),
@@ -38,9 +40,6 @@ public class Controller {
     }
     public void initialize(){
         disegno= canva.getGraphicsContext2D();
-        canva.setStyle("-f-border-style: collapse");
-        canva.setStyle("-fx-border-color: black");
-        canva.setStyle("-fx-border-width: 2 em");
         canva.setOnMousePressed(e->{
             disegno.setStroke(cpLine.getValue());
             disegno.beginPath();

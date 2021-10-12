@@ -11,13 +11,13 @@
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:16" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:win:16" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:mac:16" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:16" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:win:16" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:mac:16" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-base:16" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:win:16" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:mac:16" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:16" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:win:16" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:mac:16" level="project" />
     <orderEntry type="library" name="Maven: org.controlsfx:controlsfx:11.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.kordamp.bootstrapfx:bootstrapfx-core:0.4.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.7.1" level="project" />
