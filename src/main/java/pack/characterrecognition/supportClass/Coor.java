@@ -1,4 +1,4 @@
-package pack.characterrecognition.geometry;
+package pack.characterrecognition.supportClass;
 
 import java.util.Objects;
 

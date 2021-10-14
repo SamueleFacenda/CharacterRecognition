@@ -5,13 +5,10 @@ import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
-import javafx.scene.layout.BorderStroke;
 import javafx.scene.text.TextAlignment;
-import pack.characterrecognition.geometry.Vector;
+import pack.characterrecognition.supportClass.Vector;
 
 public class Controller {
     @FXML

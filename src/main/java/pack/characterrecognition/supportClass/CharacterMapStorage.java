@@ -1,10 +1,10 @@
-package pack.characterrecognition.geometry;
+package pack.characterrecognition.supportClass;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 public class CharacterMapStorage {
-    private static final String location="pack/characterrecognition/geometry/saves.txt";
+    private static final String location= "pack/characterrecognition/supportClass/saves.txt";
     private static final Gson gson = new Gson();
     public static void write(CharacterSaves in) throws IOException {
         String data=gson.toJson(in);

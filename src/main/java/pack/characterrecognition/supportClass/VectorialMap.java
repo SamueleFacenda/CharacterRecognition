@@ -1,4 +1,4 @@
-package pack.characterrecognition.geometry;
+package pack.characterrecognition.supportClass;
 
 public class VectorialMap extends VectorialImage{
 }
