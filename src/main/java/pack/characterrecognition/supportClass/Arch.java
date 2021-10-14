@@ -27,6 +27,7 @@ public class Arch extends Vector{
         double radius=getRadius(),radS=Math.asin(Math.abs(s.y-center.y)/radius),radE=Math.asin(Math.abs(e.y-center.y)/radius);
         radS=s.y>center.y?(s.x> center.x?radS:Math.PI-radS):(s.x> center.x?2*Math.PI-radS:Math.PI+radS);
         radE=e.y>center.y?(e.x> center.x?radE:Math.PI-radE):(e.x> center.x?2*Math.PI-radE:Math.PI+radE);
+        if(radS>radE)radE+=2*Math.PI;
         double medRad=(radS+radE)/2;
         return new Coor(radius*Math.cos(medRad),radius*Math.sin(medRad));
     }
@@ -52,6 +53,7 @@ public class Arch extends Vector{
         double m=getPendenza(),q=getYAxis(),start=Double.min(s.x,e.x),val,radius=getRadius(),delta,radS=Math.asin(Math.abs(s.y-center.y)/radius),radE=Math.asin(Math.abs(e.y-center.y)/radius),radSu,radGiu;
         radS=s.y>center.y?(s.x> center.x?radS:Math.PI-radS):(s.x> center.x?2*Math.PI-radS:Math.PI+radS);
         radE=e.y>center.y?(e.x> center.x?radE:Math.PI-radE):(e.x> center.x?2*Math.PI-radE:Math.PI+radE);
+        if(radS>radE)radE+=2*Math.PI;
         for(int i=(int)start;i<start+(int)Math.abs(s.x-e.x);i++){
             delta=Math.sqrt(Math.pow(radius,2)-Math.pow(center.x-i,2));
             radSu=Math.asin(delta/radius);
