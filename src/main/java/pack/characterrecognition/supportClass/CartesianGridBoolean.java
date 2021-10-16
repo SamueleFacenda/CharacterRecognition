@@ -1,8 +1,8 @@
 package pack.characterrecognition.supportClass;
 
-public class ImageGrid {
+public class CartesianGridBoolean {
     boolean[][] grid;
-    public ImageGrid(Blob in){
+    public CartesianGridBoolean(Blob in){
         grid=new boolean[in.getHeight()][in.getWidth()];
         int minX=in.getLefter(),minY=in.getDowner();
         for(int y=grid.length-1;y>=0;y--){
