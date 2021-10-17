@@ -66,7 +66,7 @@ public class Vector {
         return Coor.getPMedio(s,e);
     }
     public static double getPendenzaDuePunti(Coor uno,Coor due ){
-        return (uno.x-due.x)/(uno.y-due.y);
+        return (uno.y-due.y)/(uno.x-due.x);
     }
     public boolean isUpper(Coor p){
         return getPendenza()*p.x-p.y+getYAxis()>0;

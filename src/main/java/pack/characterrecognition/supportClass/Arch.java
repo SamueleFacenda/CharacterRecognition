@@ -11,12 +11,16 @@ public class Arch extends Vector{
     public Arch(Coor s,Coor e,Coor p){
         super(s,e);
         this.p=p.getCopy();
+        Coor center=getCenter();
+        double raggio=getRadius(),sDeltaX= center.x-s.x,radS= s.y> center.y?Math.acos(sDeltaX/raggio):Math.PI*2-Math.acos(sDeltaX/raggio);
+        double eDeltaX= center.x-e.x,radE= e.y> center.y?Math.acos(eDeltaX/raggio):Math.PI*2-Math.acos(eDeltaX/raggio);
+        double pDeltaX= center.x-p.x,radP= p.y> center.y?Math.acos(pDeltaX/raggio):Math.PI*2-Math.acos(pDeltaX/raggio);
     }
     public Coor getCenter(){
         Coor m1=Coor.getPMedio(s,p),m2=Coor.getPMedio(p,e);
-        double p1=-1/Vector.getPendenzaDuePunti(s,p)*m1.x,p2=-1/Vector.getPendenzaDuePunti(p,e);
+        double p1=-1.0/Vector.getPendenzaDuePunti(s,p),p2=-1.0/Vector.getPendenzaDuePunti(p,e);
         double yA1=m1.y-(p1*m1.x),yA2= m2.y-(p2*m2.x);
-        double x=(p1-p2)/(yA2-yA1);
+        double x=(yA2-yA1)/(p1-p2);
         return new Coor(x,p1*x+yA1);
     }
     public double getRadius(){
@@ -27,8 +31,8 @@ public class Arch extends Vector{
         double radius=getRadius(),radS=Math.asin(Math.abs(s.y-center.y)/radius),radE=Math.asin(Math.abs(e.y-center.y)/radius);
         radS=s.y>center.y?(s.x> center.x?radS:Math.PI-radS):(s.x> center.x?2*Math.PI-radS:Math.PI+radS);
         radE=e.y>center.y?(e.x> center.x?radE:Math.PI-radE):(e.x> center.x?2*Math.PI-radE:Math.PI+radE);
-        if(radS>radE)radE+=2*Math.PI;
-        double medRad=(radS+radE)/2;
+        if(radS>radE)radE+=2.0*Math.PI;
+        double medRad=(radS+radE)/2.0;
         return new Coor(radius*Math.cos(medRad),radius*Math.sin(medRad));
     }
     public double getWidth(){
@@ -65,5 +69,9 @@ public class Arch extends Vector{
     }
     public Arch moveDownLeft(double deltaX,double deltaY){
         return new Arch(new Coor(s.x-deltaX,s.y-deltaY),new Coor(e.x-deltaX,e.y-deltaY),new Coor(p.x-deltaX,p.y-deltaY));
+    }
+    @Override
+    public String toString(){
+        return "punto piú lontano: "+getFurtherPoint();
     }
 }

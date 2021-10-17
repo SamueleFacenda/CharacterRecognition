@@ -1,4 +1,4 @@
-package pack.characterrecognition;
+package pack.characterrecognition.PrimaryGUI;
 
 import javafx.fxml.FXML;
 import javafx.geometry.VPos;
@@ -8,6 +8,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import pack.characterrecognition.CharacterRecognizor;
 import pack.characterrecognition.supportClass.Vector;
 
 public class Controller {
