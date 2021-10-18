@@ -25,8 +25,8 @@ public class Controller {
         canva.snapshot(null, writableImage);
         Stage ps= (Stage) canva.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(CharApp.class.getResource("choosePage.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 400, 400);
         ((ChoosePage)(fxmlLoader.getController())).setImg(writableImage);
-        Scene scene = new Scene(fxmlLoader.load(), 300, 400);
         ps.setTitle("Character Recognition");
         scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
         ps.setScene(scene);

@@ -52,7 +52,8 @@ public class ChoosePage {
 
     public void inserisci(ActionEvent actionEvent) {
         GridPane grid= (GridPane) btn1.getParent();
-        TextField in=new TextField("lettera");
+        TextField in=new TextField();
+        in.setPromptText("inserire qui");
         Button btn=new Button("invia");
         Label llb=new Label("inserisci la lettera che hai disegnato");
         grid.getChildren().clear();
@@ -61,7 +62,7 @@ public class ChoosePage {
         GridPane.setHalignment(in, HPos.CENTER);
         btn.setOnAction(e->{
             String input=in.getText().toUpperCase();
-            if(input.length()!=1||((int)input.charAt(0)>64&&(int)input.charAt(0)<91)){
+            if(input.length()!=1||(int)input.charAt(0)<64||(int)input.charAt(0)>91){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("errore");
                 alert.setHeaderText("input non valido");
