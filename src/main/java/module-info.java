@@ -8,8 +8,8 @@ module pack.characterrecognition {
 
     opens pack.characterrecognition to javafx.fxml;
     exports pack.characterrecognition;
-    exports pack.characterrecognition.PrimaryGUI;
-    opens pack.characterrecognition.PrimaryGUI to javafx.fxml;
+    exports pack.characterrecognition.primaryGUI;
+    opens pack.characterrecognition.primaryGUI to javafx.fxml;
     exports pack.characterrecognition.test;
     opens pack.characterrecognition.test to javafx.fxml;
 }

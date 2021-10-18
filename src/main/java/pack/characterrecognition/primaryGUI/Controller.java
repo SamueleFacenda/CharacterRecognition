@@ -1,15 +1,18 @@
-package pack.characterrecognition.PrimaryGUI;
+package pack.characterrecognition.primaryGUI;
 
 import javafx.fxml.FXML;
-import javafx.geometry.VPos;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
-import javafx.scene.text.TextAlignment;
-import pack.characterrecognition.CharacterRecognizor;
-import pack.characterrecognition.supportClass.Vector;
+import javafx.stage.Stage;
+import org.kordamp.bootstrapfx.BootstrapFX;
+import pack.characterrecognition.CharApp;
+
+import java.io.IOException;
 
 public class Controller {
     @FXML
@@ -17,20 +20,16 @@ public class Controller {
     private GraphicsContext disegno;
     private ColorPicker cpLine = new ColorPicker(Color.BLACK);
     @FXML
-    protected void invio() {
+    protected void invio() throws IOException {
         WritableImage writableImage = new WritableImage((int)canva.getWidth(),(int) canva.getHeight());
         canva.snapshot(null, writableImage);
-        CharacterRecognizor cr=new CharacterRecognizor(writableImage);
-        cr.recognise();
-        disegno.clearRect(0, 0, canva.getWidth(), canva.getHeight());
-        disegno.setTextAlign(TextAlignment.CENTER);
-        disegno.setTextBaseline(VPos.CENTER);
-        Vector v=new Vector(0,0,2,2);
-        disegno.fillText(
-                "Carattere: "+cr.getChar(),
-                Math.round(canva.getWidth() /2 ),
-                Math.round(canva.getHeight() /2)
-        );
+        Stage ps= (Stage) canva.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(CharApp.class.getResource("choosePage.fxml"));
+        ((ChoosePage)(fxmlLoader.getController())).setImg(writableImage);
+        Scene scene = new Scene(fxmlLoader.load(), 300, 400);
+        ps.setTitle("Character Recognition");
+        scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
+        ps.setScene(scene);
     }
     @FXML
     protected void clear(){
