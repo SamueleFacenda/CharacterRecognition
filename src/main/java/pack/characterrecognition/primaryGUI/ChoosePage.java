@@ -15,7 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
 import pack.characterrecognition.CharApp;
-import pack.characterrecognition.CharacterRecognizor;
+import pack.characterrecognition.supportClass.CharacterRecognizor;
 
 import java.io.IOException;
 

@@ -12,4 +12,6 @@ module pack.characterrecognition {
     opens pack.characterrecognition.primaryGUI to javafx.fxml;
     exports pack.characterrecognition.test;
     opens pack.characterrecognition.test to javafx.fxml;
+    exports pack.characterrecognition.supportClass;
+    opens pack.characterrecognition.supportClass to javafx.fxml;
 }

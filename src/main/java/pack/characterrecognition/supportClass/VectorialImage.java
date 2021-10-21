@@ -1,7 +1,9 @@
 package pack.characterrecognition.supportClass;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
 
 import java.util.LinkedList;
 
@@ -101,11 +103,16 @@ public class VectorialImage {
                     minY=v.p.y;
             }
         }
-        ImageFromVector img=new ImageFromVector((int)(maxX-minX+2),(int)(maxY-minY+2));
-        for(Arch v:archList)
-            img.write(v.moveDownLeft(minX,minY));
-        for(Vector v:vectorList)
-            img.write(v.moveDownLeft(minX,minY));
+        WritableImage img=new WritableImage((int)(maxX-minX+2),(int)(maxY-minY+2));
+        PixelWriter pi=img.getPixelWriter();
+        for(Arch in:archList) {
+            in=in.moveDownLeft(minX,minY);
+            for(Coor c:in.getCoors()) pi.setColor((int)c.x,(int)(c.y), Color.BLACK);
+        }
+        for(Vector in:vectorList) {
+            in=in.moveDownLeft(minX,minY);
+            for(Coor c:in.getCoors()) pi.setColor((int)c.x,(int)(c.y),Color.BLACK);
+        }
         return img;
     }
 }

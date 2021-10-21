@@ -1,4 +1,4 @@
-package pack.characterrecognition;
+package pack.characterrecognition.supportClass;
 
 import javafx.scene.image.WritableImage;
 import pack.characterrecognition.supportClass.CartesianGridBoolean;

@@ -15,6 +15,22 @@ public class Arch extends Vector{
         double raggio=getRadius(),sDeltaX= center.x-s.x,radS= s.y> center.y?Math.acos(sDeltaX/raggio):Math.PI*2-Math.acos(sDeltaX/raggio);
         double eDeltaX= center.x-e.x,radE= e.y> center.y?Math.acos(eDeltaX/raggio):Math.PI*2-Math.acos(eDeltaX/raggio);
         double pDeltaX= center.x-p.x,radP= p.y> center.y?Math.acos(pDeltaX/raggio):Math.PI*2-Math.acos(pDeltaX/raggio);
+        if(radE>radP&&radS>radP){
+            if(radE>radS)
+                radE-=2.0*Math.PI;
+            else
+                radS-=2.0*Math.PI;
+        }else if(radE<radP&&radS<radP){
+            if(radE<radS)
+                radE+=2.0*Math.PI;
+            else
+                radS+=2.0*Math.PI;
+        }
+        if(radE<radS){
+            double swap=radE;
+            radE=radS;
+            radS=swap;
+        }
     }
     public Coor getCenter(){
         Coor m1=Coor.getPMedio(s,p),m2=Coor.getPMedio(p,e);
@@ -28,12 +44,32 @@ public class Arch extends Vector{
     }
     public Coor getFurtherPoint(){
         Coor center=getCenter();
-        double radius=getRadius(),radS=Math.asin(Math.abs(s.y-center.y)/radius),radE=Math.asin(Math.abs(e.y-center.y)/radius);
-        radS=s.y>center.y?(s.x> center.x?radS:Math.PI-radS):(s.x> center.x?2*Math.PI-radS:Math.PI+radS);
-        radE=e.y>center.y?(e.x> center.x?radE:Math.PI-radE):(e.x> center.x?2*Math.PI-radE:Math.PI+radE);
-        if(radS>radE)radE+=2.0*Math.PI;
-        double medRad=(radS+radE)/2.0;
-        return new Coor(radius*Math.cos(medRad),radius*Math.sin(medRad));
+        double radius=getRadius(),sDeltaX= center.x-s.x,radS= s.y> center.y?Math.acos(sDeltaX/radius):Math.PI*2-Math.acos(sDeltaX/radius);
+        double eDeltaX= center.x-e.x,radE= e.y> center.y?Math.acos(eDeltaX/radius):Math.PI*2-Math.acos(eDeltaX/radius);
+        double pDeltaX= center.x-p.x,radP= p.y> center.y?Math.acos(pDeltaX/radius):Math.PI*2-Math.acos(pDeltaX/radius);
+        if(radE>radP&&radS>radP){
+            if(radE>radS)
+                radE-=2.0*Math.PI;
+            else
+                radS-=2.0*Math.PI;
+        }else if(radE<radP&&radS<radP){
+            if(radE<radS)
+                radE+=2.0*Math.PI;
+            else
+                radS+=2.0*Math.PI;
+        }
+        System.out.println(radE/Math.PI);
+        System.out.println(radS/Math.PI);
+        double medRadFrat=(radS+radE)/2.0/Math.PI,outX,outY;
+        if((medRadFrat>0&&medRadFrat<1)||(medRadFrat>2&&medRadFrat<3)||(medRadFrat>-4&&medRadFrat<-2))
+            outY= center.y+ radius*Math.sin((radS+radE)/2.0);
+        else
+            outY= center.y-radius*Math.sin((radS+radE)/2.0);
+        if((medRadFrat>1&&medRadFrat<3)||(medRadFrat>5&&medRadFrat<7)||(medRadFrat>-3&&medRadFrat<-1))
+            outX= center.x-radius*Math.cos((radS+radE)/2.0);
+        else
+            outX= center.x+radius*Math.cos((radS+radE)/2.0);
+        return new Coor(outX,outY);
     }
     public double getWidth(){
         return getDistanza(getFurtherPoint());
@@ -54,10 +90,21 @@ public class Arch extends Vector{
     public Coor[] getCoors(){
         LinkedList<Coor> lista=new LinkedList<>();
         Coor center=getCenter();
-        double m=getPendenza(),q=getYAxis(),start=Double.min(s.x,e.x),val,radius=getRadius(),delta,radS=Math.asin(Math.abs(s.y-center.y)/radius),radE=Math.asin(Math.abs(e.y-center.y)/radius),radSu,radGiu;
-        radS=s.y>center.y?(s.x> center.x?radS:Math.PI-radS):(s.x> center.x?2*Math.PI-radS:Math.PI+radS);
-        radE=e.y>center.y?(e.x> center.x?radE:Math.PI-radE):(e.x> center.x?2*Math.PI-radE:Math.PI+radE);
-        if(radS>radE)radE+=2*Math.PI;
+        double m=getPendenza(),q=getYAxis(),start=Double.min(s.x,e.x),val,delta,radSu,radGiu;
+        double radius=getRadius(),sDeltaX= center.x-s.x,radS= s.y> center.y?Math.acos(sDeltaX/radius):Math.PI*2-Math.acos(sDeltaX/radius);
+        double eDeltaX= center.x-e.x,radE= e.y> center.y?Math.acos(eDeltaX/radius):Math.PI*2-Math.acos(eDeltaX/radius);
+        double pDeltaX= center.x-p.x,radP= p.y> center.y?Math.acos(pDeltaX/radius):Math.PI*2-Math.acos(pDeltaX/radius);
+        if(radE>radP&&radS>radP){
+            if(radE>radS)
+                radE-=2.0*Math.PI;
+            else
+                radS-=2.0*Math.PI;
+        }else if(radE<radP&&radS<radP){
+            if(radE<radS)
+                radE+=2.0*Math.PI;
+            else
+                radS+=2.0*Math.PI;
+        }
         for(int i=(int)start;i<start+(int)Math.abs(s.x-e.x);i++){
             delta=Math.sqrt(Math.pow(radius,2)-Math.pow(center.x-i,2));
             radSu=Math.asin(delta/radius);
