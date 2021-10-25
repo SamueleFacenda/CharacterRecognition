@@ -17,10 +17,9 @@ public class View2 {
     public void initialize(){
         Vector v=new Vector(new Coor(0,0),new Coor(100,100));
         VectorialImage vi=new VectorialImage();
-        Arch a=new Arch(new Coor(100,100),new Coor(0,0),new Coor(30,70));
+        Arch a=new Arch(new Coor(100,200),new Coor(0,0),new Coor(30,120));
         vi.add(a);
         vi.add(v);
-        System.out.println(a);
         gruppo.getChildren().add(new ImageView(vi.toImage()));
     }
 }
