@@ -1,6 +1,7 @@
 package pack.characterrecognition.supportClass;
 
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class Arch extends Vector{
     protected Coor p;//terzo punto dell'arco oltre all'inizio e alla fine
@@ -29,15 +30,22 @@ public class Arch extends Vector{
         }
         if(radE<radS){
             Coor swap=s;
-            s=e;
-            e=swap;
+            this.s=e.getCopy();
+            this.e=swap.getCopy();
             this.radE=radS;
             this.radS=radE;
         }else{
+            this.s=s.getCopy();
+            this.e=e.getCopy();
             this.radE=radE;
             this.radS=radS;
         }
     }
+
+    public Arch() {
+        super();
+    }
+
     public Coor getCenter(){
         Coor m1=Coor.getPMedio(s,p),m2=Coor.getPMedio(p,e);
         double p1=-1.0/Vector.getPendenzaDuePunti(s,p),p2=-1.0/Vector.getPendenzaDuePunti(p,e);
@@ -91,11 +99,37 @@ public class Arch extends Vector{
         }
         return lista.toArray(new Coor[0]);
     }
+    @Override
     public Arch moveDownLeft(double deltaX,double deltaY){
         return new Arch(new Coor(s.x-deltaX,s.y-deltaY),new Coor(e.x-deltaX,e.y-deltaY),new Coor(p.x-deltaX,p.y-deltaY));
     }
     @Override
     public String toString(){
         return "punto piú lontano: "+getFurtherPoint();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Arch arch = (Arch) o;
+        return Objects.equals(p, arch.p);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), p, radE, radS);
+    }
+
+    @Override
+    public Arch getCopy(){
+        Arch out=new Arch();
+        out.s=s.getCopy();
+        out.e=e.getCopy();
+        out.p=p.getCopy();
+        out.radS=radS;
+        out.radE=radE;
+        return out;
     }
 }

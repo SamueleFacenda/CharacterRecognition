@@ -6,10 +6,13 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class VectorialImage {
-    private LinkedList<Vector> vectorList;
-    private LinkedList<Arch> archList;
+    protected LinkedList<Vector> vectorList;
+
+
+    protected LinkedList<Arch> archList;
     public VectorialImage(){
         vectorList=new LinkedList<>();
         archList=new LinkedList<>();
@@ -114,5 +117,17 @@ public class VectorialImage {
             for(Coor c:in.getCoors()) pi.setColor((int)c.x,(int)(c.y),Color.BLACK);
         }
         return img;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        VectorialImage that = (VectorialImage) o;
+        return Objects.equals(vectorList, that.vectorList) && Objects.equals(archList, that.archList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(vectorList, archList);
     }
 }

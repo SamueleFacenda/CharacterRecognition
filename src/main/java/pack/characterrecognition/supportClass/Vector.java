@@ -1,5 +1,7 @@
 package pack.characterrecognition.supportClass;
 
+import java.util.Objects;
+
 public class Vector {
     protected Coor s,e;//start e end
 
@@ -80,5 +82,22 @@ public class Vector {
     }
     public Vector moveDownLeft(double deltaX,double deltaY){
         return new Vector(new Coor(s.x-deltaX,s.y-deltaY),new Coor(e.x-deltaX,e.y-deltaY));
+    }
+    public Vector(){}
+    public Vector getCopy(){
+        return new Vector(s,e);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vector vector = (Vector) o;
+        return Objects.equals(s, vector.s) && Objects.equals(e, vector.e);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(s, e);
     }
 }
