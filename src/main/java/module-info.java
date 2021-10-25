@@ -4,6 +4,7 @@ module pack.characterrecognition {
 
     requires org.controlsfx.controls;
     requires org.kordamp.bootstrapfx.core;
+    requires java.sql;
     requires gson;
 
     opens pack.characterrecognition to javafx.fxml;

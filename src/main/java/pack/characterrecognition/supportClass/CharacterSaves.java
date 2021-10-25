@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class CharacterSaves {
     private char car;
-    private  LinkedList<VectorialMap> lista;
+    private    LinkedList<VectorialMap> lista;
     public CharacterSaves(char car){
         this.car=car;
         lista=new LinkedList<>();
