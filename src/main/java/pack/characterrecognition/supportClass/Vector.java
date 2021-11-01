@@ -87,7 +87,17 @@ public class Vector {
     public Vector getCopy(){
         return new Vector(s,e);
     }
-
+    public static boolean areSemiParallel(Vector uno,Vector due,double radMax){
+        double radUno=Math.atan(uno.getPendenza()),radDue=due.getPendenza();
+        double diff=Math.abs(radUno-radDue);
+        return diff<=radMax || Math.PI*2-diff<=radMax;
+    }
+    public Coor getNearestPointOnThis(Coor in){
+        double pendenza=getPendenza(),pendenzaStorta=-1.0/pendenza;
+        double yPointStorto=in.y-(pendenzaStorta*in.x),yPoint=getYAxis();
+        double x=(yPointStorto-yPoint)/(pendenza-pendenzaStorta);
+        return new Coor(x,pendenza*x+yPoint);
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

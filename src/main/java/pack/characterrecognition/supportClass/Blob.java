@@ -1,9 +1,12 @@
 package pack.characterrecognition.supportClass;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+
 import java.util.LinkedList;
 
 public class Blob {
-    private LinkedList<Coor> lista;
+    protected LinkedList<Coor> lista;
     public Blob(){
         lista=new LinkedList<>();
     }
@@ -52,5 +55,30 @@ public class Blob {
                 return true;
         }
         return false;
+    }
+    public static Blob merge(Blob uno,Blob due){
+        Blob out=new Blob();
+        out.lista.addAll(uno.lista);
+        out.lista.addAll(due.lista);
+        return out;
+    }
+    @Override
+    public String toString(){
+        int left=getLefter(),down=getDowner();
+        boolean[][] grid=new boolean[getUpper()-down+1][getRigther()-left+1];
+        for (Coor c:
+             lista) {
+            grid[(int) (c.y-down)][(int) (c.x-left)]=true;
+        }
+        String out="Blob:\n";
+        for (boolean[] row:
+             grid) {
+            for (boolean cell:
+                 row) {
+                out+=cell?"@":" ";
+            }
+            out+="\n";
+        }
+        return out;
     }
 }

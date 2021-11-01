@@ -1,107 +1,805 @@
 {
   "lista": [
     {
-      "car": "a",
       "lista": []
     },
     {
-      "car": "b",
       "lista": []
     },
     {
-      "car": "c",
       "lista": []
     },
     {
-      "car": "d",
       "lista": []
     },
     {
-      "car": "e",
       "lista": []
     },
     {
-      "car": "f",
       "lista": []
     },
     {
-      "car": "g",
       "lista": []
     },
     {
-      "car": "h",
       "lista": []
     },
     {
-      "car": "i",
       "lista": []
     },
     {
-      "car": "j",
       "lista": []
     },
     {
-      "car": "k",
       "lista": []
     },
     {
-      "car": "l",
       "lista": []
     },
     {
-      "car": "m",
       "lista": []
     },
     {
-      "car": "n",
       "lista": []
     },
     {
-      "car": "o",
       "lista": []
     },
     {
-      "car": "p",
       "lista": []
     },
     {
-      "car": "q",
       "lista": []
     },
     {
-      "car": "r",
       "lista": []
     },
     {
-      "car": "s",
       "lista": []
     },
     {
-      "car": "t",
       "lista": []
     },
     {
-      "car": "u",
       "lista": []
     },
     {
-      "car": "v",
       "lista": []
     },
     {
-      "car": "w",
       "lista": []
     },
     {
-      "car": "x",
       "lista": []
     },
     {
-      "car": "y",
       "lista": []
     },
     {
-      "car": "z",
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": [
+        {
+          "point": [],
+          "vectorList": [
+            {
+              "s": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "e": {
+                "x": 100.0,
+                "y": 100.0
+              }
+            }
+          ],
+          "archList": [
+            {
+              "p": {
+                "x": 30.0,
+                "y": 120.0
+              },
+              "radE": 3.1517963810837526,
+              "radS": 2.2040937080942267,
+              "s": {
+                "x": 100.0,
+                "y": 200.0
+              },
+              "e": {
+                "x": 0.0,
+                "y": 0.0
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
+      "lista": []
+    },
+    {
       "lista": []
     }
   ]

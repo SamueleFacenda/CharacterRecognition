@@ -10,15 +10,15 @@ public class DataAccess {
         DataClass dc =FileSaverCharacter.read();
         if(dc==null)
             dc=new DataClass();
-        CharacterSaves cs=dc.get((int)in-(int)'a');
-        cs.add(mappa);
+        dc.get(in).add(mappa);
         FileSaverCharacter.write(dc);
     }
     public static CharacterSaves get(char in) throws IOException {
         DataClass dc =FileSaverCharacter.read();
-        if(dc==null)
-            return null;
-        else
-            return dc.get((int)in-(int)'a');
+        if(dc==null){
+            dc=new DataClass();
+            FileSaverCharacter.write(dc);
+        }
+        return dc.get(in);
     }
 }

@@ -5,12 +5,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
 import pack.characterrecognition.CharApp;
+import pack.characterrecognition.test.View2;
 
 import java.io.IOException;
 
@@ -18,7 +18,6 @@ public class Controller {
     @FXML
     private Canvas canva;
     private GraphicsContext disegno;
-    private ColorPicker cpLine = new ColorPicker(Color.BLACK);
     @FXML
     protected void invio() throws IOException {
         WritableImage writableImage = new WritableImage((int)canva.getWidth(),(int) canva.getHeight());
@@ -37,8 +36,8 @@ public class Controller {
     }
     public void initialize(){
         disegno= canva.getGraphicsContext2D();
+        disegno.setStroke(Color.BLACK);
         canva.setOnMousePressed(e->{
-            disegno.setStroke(cpLine.getValue());
             disegno.beginPath();
             disegno.lineTo(e.getX(), e.getY());
         });
@@ -46,5 +45,17 @@ public class Controller {
             disegno.lineTo(e.getX(), e.getY());
             disegno.stroke();
         });
+    }
+    private void nuova() throws IOException {
+        WritableImage writableImage = new WritableImage((int)canva.getWidth(),(int) canva.getHeight());
+        canva.snapshot(null, writableImage);
+        FXMLLoader fxmlLoader = new FXMLLoader(CharApp.class.getResource("view2.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 300, 400);
+        Stage ps= new Stage();
+        ((View2)fxmlLoader.getController()).addImg(writableImage);
+        ps.setTitle("Character Recognition");
+        scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
+        ps.setScene(scene);
+        ps.show();
     }
 }

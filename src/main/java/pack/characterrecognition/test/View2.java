@@ -3,6 +3,7 @@ package pack.characterrecognition.test;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import pack.characterrecognition.supportClass.*;
 
@@ -19,9 +20,11 @@ public class View2 {
         Arch a=new Arch(new Coor(100,200),new Coor(0,0),new Coor(30,120));
         vi.add(a);
         vi.add(v);
-        String co="ciao sono: samu?",ke=Crypto.randomKey(10),cod=Crypto.code(co,ke);
         gruppo.getChildren().add(new ImageView(vi.toImage()));
         DataAccess.add('b',new VectorialMap(vi));
         FileSaverCharacter.read();
+    }
+    public void addImg(Image in){
+        gruppo.getChildren().add(new ImageView(in));
     }
 }

@@ -132,4 +132,47 @@ public class Arch extends Vector{
         out.radE=radE;
         return out;
     }
+    private void calcRad(){
+        Coor center=getCenter();
+        double raggio=getRadius(),sDeltaX= s.x-center.x,radS= s.y> center.y?Math.acos(sDeltaX/raggio):Math.PI*2-Math.acos(sDeltaX/raggio);
+        double eDeltaX= e.x-center.x,radE= e.y> center.y?Math.acos(eDeltaX/raggio):Math.PI*2-Math.acos(eDeltaX/raggio);
+        double pDeltaX= p.x-center.x,radP= p.y> center.y?Math.acos(pDeltaX/raggio):Math.PI*2-Math.acos(pDeltaX/raggio);
+        if(radE>radP&&radS>radP){
+            if(radE>radS)
+                radE-=2.0*Math.PI;
+            else
+                radS-=2.0*Math.PI;
+        }else if(radE<radP&&radS<radP){
+            if(radE<radS)
+                radE+=2.0*Math.PI;
+            else
+                radS+=2.0*Math.PI;
+        }
+        if(radE<radS){
+            Coor swap=s;
+            this.s=e.getCopy();
+            this.e=swap.getCopy();
+            this.radE=radS;
+            this.radS=radE;
+        }else{
+            this.s=s.getCopy();
+            this.e=e.getCopy();
+            this.radE=radE;
+            this.radS=radS;
+        }
+    }
+    @Override
+    public void setS(Coor in){
+        s=in.getCopy();
+        calcRad();
+    }
+    @Override
+    public void setE(Coor in){
+        e=in.getCopy();
+        calcRad();
+    }
+    public void setP(Coor in){
+        p=in.getCopy();
+        calcRad();
+    }
 }

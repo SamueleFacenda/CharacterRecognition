@@ -3,10 +3,8 @@ package pack.characterrecognition.supportClass;
 import java.util.LinkedList;
 
 public class CharacterSaves {
-    private char car;
     private    LinkedList<VectorialMap> lista;
-    public CharacterSaves(char car){
-        this.car=car;
+    public CharacterSaves(){
         lista=new LinkedList<>();
     }
     public void add(VectorialMap in){

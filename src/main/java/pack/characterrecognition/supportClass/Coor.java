@@ -51,4 +51,10 @@ public class Coor {
     public String toString(){
         return "x: "+x+",y: "+y;
     }
+    public boolean areSimilar(Coor in,double radius){
+        return getDist(this,in)<=radius;
+    }
+    public static boolean areNear(Coor uno,Coor due,double radius){
+        return getDist(uno,due)<=radius;
+    }
 }
