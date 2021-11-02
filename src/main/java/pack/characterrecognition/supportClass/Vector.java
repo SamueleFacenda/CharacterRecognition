@@ -110,4 +110,8 @@ public class Vector {
     public int hashCode() {
         return Objects.hash(s, e);
     }
+    @Override
+    public String toString(){
+        return "Vettore: \n"+"start: "+s+"\nend: "+e;
+    }
 }

@@ -130,4 +130,15 @@ public class VectorialImage {
     public int hashCode() {
         return Objects.hash(vectorList, archList);
     }
+    @Override
+    public String toString(){
+        String out="VectorialImage: ";
+        for(Arch in:archList) {
+            out+="\n"+in;
+        }
+        for(Vector in:vectorList) {
+            out+="\n"+in;
+        }
+        return out;
+    }
 }
