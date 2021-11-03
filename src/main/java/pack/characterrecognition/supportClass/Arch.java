@@ -85,7 +85,7 @@ public class Arch extends Vector{
         return new Arch(new Coor(s.x+n,s.y),new Coor(e.x+n,e.y),new Coor(p.x+n,p.y));
     }
     @Override
-    public Coor[] getCoors(){
+    public Coor[] getCoorsX(){
         LinkedList<Coor> lista=new LinkedList<>();
         Coor center=getCenter();
         double raggio=getRadius(),start= center.x-raggio, deltaY,radSu;
@@ -100,12 +100,27 @@ public class Arch extends Vector{
         return lista.toArray(new Coor[0]);
     }
     @Override
-    public Arch moveDownLeft(double deltaX,double deltaY){
-        return new Arch(new Coor(s.x-deltaX,s.y-deltaY),new Coor(e.x-deltaX,e.y-deltaY),new Coor(p.x-deltaX,p.y-deltaY));
+    public Coor[] getCoorsY(){
+        LinkedList<Coor> lista=new LinkedList<>();
+        Coor center=getCenter();
+        double raggio=getRadius(),start= center.y-raggio, deltaX,radLato,radLato2;
+        for(int i=(int)start;i<start+raggio*2;i++){
+            deltaX=Math.sqrt(Math.pow(raggio,2)-Math.pow(i-center.y,2));
+            radLato=Math.acos(deltaX/raggio);
+            if(i<raggio){
+                radLato=Math.PI*1.5+radLato;
+                radLato2=Math.PI*1.5-radLato;
+            }else
+                radLato2=Math.PI-radLato;
+            System.out.println(radLato/Math.PI);
+            if((radS-Math.PI*2<=radLato&&radLato<=radE-Math.PI*2)||(radS<=radLato&&radLato<=radE)|(radS+Math.PI*2<=radLato&&radLato<=radE+Math.PI*2))lista.add(new Coor(Math.round(deltaX+center.x),i));
+            if((radS-Math.PI*2<=radLato2&&radLato2<=radE-Math.PI*2)||(radS<=radLato2&&radLato2<=radE)|(radS+Math.PI*2<=radLato2&&radLato2<=radE+Math.PI*2))lista.add(new Coor(Math.round(center.x-deltaX),i));
+        }
+        return lista.toArray(new Coor[0]);
     }
     @Override
-    public String toString(){
-        return "punto piú lontano: "+getFurtherPoint();
+    public Arch moveDownLeft(double deltaX,double deltaY){
+        return new Arch(new Coor(s.x-deltaX,s.y-deltaY),new Coor(e.x-deltaX,e.y-deltaY),new Coor(p.x-deltaX,p.y-deltaY));
     }
 
     @Override

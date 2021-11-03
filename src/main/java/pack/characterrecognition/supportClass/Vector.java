@@ -68,16 +68,26 @@ public class Vector {
         return Coor.getPMedio(s,e);
     }
     public static double getPendenzaDuePunti(Coor uno,Coor due ){
-        return (uno.y-due.y)/(uno.x-due.x);
+        if(uno.x-due.x==0)
+            return Integer.MAX_VALUE;
+        else
+            return (uno.y-due.y)/(uno.x-due.x);
     }
     public boolean isUpper(Coor p){
         return getPendenza()*p.x-p.y+getYAxis()>0;
     }
-    public Coor[] getCoors(){
+    public Coor[] getCoorsX(){
         Coor[] out=new Coor[(int)Math.abs(s.x-e.x)];
         double m=getPendenza(),q=getYAxis(),start=Double.min(s.x,e.x);
         for(int i=(int)start;i<start+out.length;i++)
             out[(int) (i-start)]=new Coor(i,Math.round(i*m+q));
+        return out;
+    }
+    public Coor[] getCoorsY(){
+        Coor[] out=new Coor[(int)Math.abs(s.y-e.y)];
+        double m=getPendenza(),q=getYAxis(),start=Double.min(s.y,e.y);
+        for(int i=(int)start;i<start+out.length;i++)
+            out[(int) (i-start)]=new Coor(Math.round((i-q)/m),i);
         return out;
     }
     public Vector moveDownLeft(double deltaX,double deltaY){
@@ -93,7 +103,7 @@ public class Vector {
         return diff<=radMax || Math.PI*2-diff<=radMax;
     }
     public Coor getNearestPointOnThis(Coor in){
-        double pendenza=getPendenza(),pendenzaStorta=-1.0/pendenza;
+        double pendenza=getPendenza(),pendenzaStorta=pendenza==0?Integer.MAX_VALUE:-1.0/pendenza;
         double yPointStorto=in.y-(pendenzaStorta*in.x),yPoint=getYAxis();
         double x=(yPointStorto-yPoint)/(pendenza-pendenzaStorta);
         return new Coor(x,pendenza*x+yPoint);

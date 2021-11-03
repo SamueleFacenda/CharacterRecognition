@@ -108,14 +108,20 @@ public class VectorialImage {
         }
         WritableImage img=new WritableImage((int)(maxX-minX+2),(int)(maxY-minY+2));
         PixelWriter pi=img.getPixelWriter();
+        Arch niuA;
+        Vector niuV;
         for(Arch in:archList) {
-            in=in.moveDownLeft(minX,minY);
-            for(Coor c:in.getCoors()) pi.setColor((int)c.x,(int)(c.y), Color.BLACK);
+            niuA=in.moveDownLeft(minX,minY);
+            for(Coor c:niuA.getCoorsX()) pi.setColor((int)c.x,(int)(c.y), Color.BLACK);
+            for(Coor c:niuA.getCoorsY()) pi.setColor((int)c.x,(int)(c.y), Color.BLACK);
         }
         for(Vector in:vectorList) {
-            in=in.moveDownLeft(minX,minY);
-            for(Coor c:in.getCoors()) pi.setColor((int)c.x,(int)(c.y),Color.BLACK);
+            niuV=in.moveDownLeft(minX,minY);
+            for(Coor c:niuV.getCoorsX()) pi.setColor((int)c.x,(int)(c.y),Color.BLACK);
+            for(Coor c:niuV.getCoorsY()) pi.setColor((int)c.x,(int)(c.y),Color.BLACK);
         }
+        System.out.println(img.getWidth());
+        System.out.println(img.getHeight());
         return img;
     }
     @Override

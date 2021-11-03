@@ -28,7 +28,7 @@ public class View2 {
         VectorialMap vm=new VectorialMap(vi);
         vm.enchant();
         lbl1.setText(vm.toString());
-        gruppo.getChildren().add(new ImageView(vm.toImage()));
+        gruppo.getChildren().add(new ImageView(vi.toImage()));
     }
     public void addImg(Image in){
         gruppo.getChildren().add(new ImageView(in));
