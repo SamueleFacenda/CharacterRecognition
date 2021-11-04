@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
 import pack.characterrecognition.CharApp;
-import pack.characterrecognition.test.View2;
+import pack.characterrecognition.test.ControlleTest;
 
 import java.io.IOException;
 
@@ -52,7 +52,7 @@ public class Controller {
         FXMLLoader fxmlLoader = new FXMLLoader(CharApp.class.getResource("view2.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 300, 400);
         Stage ps= new Stage();
-        ((View2)fxmlLoader.getController()).addImg(writableImage);
+        ((ControlleTest)fxmlLoader.getController()).addImg(writableImage);
         ps.setTitle("Character Recognition");
         scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
         ps.setScene(scene);

@@ -3,7 +3,7 @@ package pack.characterrecognition.supportClass;
 import java.util.LinkedList;
 import java.util.Objects;
 
-public class Arch extends Vector{
+public class Arch extends Segment {
     protected Coor p;//terzo punto dell'arco oltre all'inizio e alla fine
     private double radE,radS;
     public Arch(int xS, int yS, int xE, int yE,int pX,int pY) {
@@ -48,7 +48,7 @@ public class Arch extends Vector{
 
     public Coor getCenter(){
         Coor m1=Coor.getPMedio(s,p),m2=Coor.getPMedio(p,e);
-        double p1=-1.0/Vector.getPendenzaDuePunti(s,p),p2=-1.0/Vector.getPendenzaDuePunti(p,e);
+        double p1=-1.0/ Segment.getPendenzaDuePunti(s,p),p2=-1.0/ Segment.getPendenzaDuePunti(p,e);
         double yA1=m1.y-(p1*m1.x),yA2= m2.y-(p2*m2.x);
         double x=(yA2-yA1)/(p1-p2);
         return new Coor(x,p1*x+yA1);
@@ -92,10 +92,10 @@ public class Arch extends Vector{
         for(int i=(int)start;i<start+raggio*2;i++){
             deltaY=Math.sqrt(Math.pow(raggio,2)-Math.pow(i-center.x,2));
             radSu=Math.asin(deltaY/raggio);
-            if(i<raggio)
+            if(i<start+raggio)
                 radSu=Math.PI-radSu;
-            if((radS-Math.PI*2<=radSu&&radSu<=radE-Math.PI*2)||(radS<=radSu&&radSu<=radE)|(radS+Math.PI*2<=radSu&&radSu<=radE+Math.PI*2))lista.add(new Coor(i,Math.round(deltaY+center.y)));
-            if((radS-Math.PI*2<=-radSu&&-radSu<=radE-Math.PI*2)||(radS<=-radSu&&-radSu<=radE)|(radS+Math.PI*2<=-radSu&&-radSu<=radE+Math.PI*2))lista.add(new Coor(i,Math.round(center.y-deltaY)));
+            if(isRadInThisPossible(radSu))lista.add(new Coor(i,Math.round(deltaY+center.y)));
+            if(isRadInThisPossible(-radSu))lista.add(new Coor(i,Math.round(center.y-deltaY)));
         }
         return lista.toArray(new Coor[0]);
     }
@@ -107,16 +107,18 @@ public class Arch extends Vector{
         for(int i=(int)start;i<start+raggio*2;i++){
             deltaX=Math.sqrt(Math.pow(raggio,2)-Math.pow(i-center.y,2));
             radLato=Math.acos(deltaX/raggio);
-            if(i<raggio){
+            if(i<start+raggio){
                 radLato=Math.PI*1.5+radLato;
                 radLato2=Math.PI*1.5-radLato;
             }else
                 radLato2=Math.PI-radLato;
-            System.out.println(radLato/Math.PI);
-            if((radS-Math.PI*2<=radLato&&radLato<=radE-Math.PI*2)||(radS<=radLato&&radLato<=radE)|(radS+Math.PI*2<=radLato&&radLato<=radE+Math.PI*2))lista.add(new Coor(Math.round(deltaX+center.x),i));
-            if((radS-Math.PI*2<=radLato2&&radLato2<=radE-Math.PI*2)||(radS<=radLato2&&radLato2<=radE)|(radS+Math.PI*2<=radLato2&&radLato2<=radE+Math.PI*2))lista.add(new Coor(Math.round(center.x-deltaX),i));
+            if(isRadInThisPossible(radLato))lista.add(new Coor(Math.round(deltaX+center.x),i));
+            if(isRadInThisPossible(radLato2))lista.add(new Coor(Math.round(center.x-deltaX),i));
         }
         return lista.toArray(new Coor[0]);
+    }
+    private boolean isRadInThisPossible(double radSu){
+        return (radS-Math.PI*2<=radSu&&radSu<=radE-Math.PI*2)||(radS<=radSu&&radSu<=radE)|(radS+Math.PI*2<=radSu&&radSu<=radE+Math.PI*2);
     }
     @Override
     public Arch moveDownLeft(double deltaX,double deltaY){
@@ -185,6 +187,10 @@ public class Arch extends Vector{
     public void setE(Coor in){
         e=in.getCopy();
         calcRad();
+    }
+    @Override
+    public String toString(){
+        return "Arco: \n"+"start: "+s+"\nend: "+e+"\n3rd point: "+p;
     }
     public void setP(Coor in){
         p=in.getCopy();

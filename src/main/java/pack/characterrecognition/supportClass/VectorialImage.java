@@ -9,40 +9,40 @@ import java.util.LinkedList;
 import java.util.Objects;
 
 public class VectorialImage {
-    protected LinkedList<Vector> vectorList;
+    protected LinkedList<Segment> segmentList;
 
 
     protected LinkedList<Arch> archList;
     public VectorialImage(){
-        vectorList=new LinkedList<>();
+        segmentList =new LinkedList<>();
         archList=new LinkedList<>();
     }
     public void add(Arch in){
         archList.add(in);
     }
-    public void add(Vector in){
-        vectorList.add(in);
+    public void add(Segment in){
+        segmentList.add(in);
     }
     public Arch getArch(int index){
         return index<archList.size()?archList.get(index):null;
     }
-    public Vector getVector(int index){
-        return index<vectorList.size()?vectorList.get(index):null;
+    public Segment getVector(int index){
+        return index< segmentList.size()? segmentList.get(index):null;
     }
     public Image toImage(){
         double maxY,maxX,minY,minX;
-        if(vectorList.size()>=1){
-            maxY=vectorList.get(0).getYE();
-            maxX=vectorList.get(0).getXE();
-            minX=vectorList.get(0).getXE();
-            minY=vectorList.get(0).getXE();
+        if(segmentList.size()>=1){
+            maxY= segmentList.get(0).getYE();
+            maxX= segmentList.get(0).getXE();
+            minX= segmentList.get(0).getXE();
+            minY= segmentList.get(0).getXE();
         }else{
             maxY=archList.get(0).getYE();
             maxX=archList.get(0).getXE();
             minX=archList.get(0).getXE();
             minY=archList.get(0).getXE();
         }
-        for(Vector v:vectorList){
+        for(Segment v: segmentList){
             if(v.s.x>maxX)
                 maxX=v.s.x;
             else{
@@ -108,33 +108,30 @@ public class VectorialImage {
         }
         WritableImage img=new WritableImage((int)(maxX-minX+2),(int)(maxY-minY+2));
         PixelWriter pi=img.getPixelWriter();
-        Arch niuA;
-        Vector niuV;
-        for(Arch in:archList) {
-            niuA=in.moveDownLeft(minX,minY);
-            for(Coor c:niuA.getCoorsX()) pi.setColor((int)c.x,(int)(c.y), Color.BLACK);
-            for(Coor c:niuA.getCoorsY()) pi.setColor((int)c.x,(int)(c.y), Color.BLACK);
-        }
-        for(Vector in:vectorList) {
-            niuV=in.moveDownLeft(minX,minY);
-            for(Coor c:niuV.getCoorsX()) pi.setColor((int)c.x,(int)(c.y),Color.BLACK);
-            for(Coor c:niuV.getCoorsY()) pi.setColor((int)c.x,(int)(c.y),Color.BLACK);
-        }
-        System.out.println(img.getWidth());
-        System.out.println(img.getHeight());
+        for(Arch in:archList) copyCoors(minY, minX, pi, in);
+        for(Segment in: segmentList)
+            copyCoors(minY, minX, pi, in);
         return img;
     }
+
+    private void copyCoors(double minY, double minX, PixelWriter pi, Segment in) {
+        Segment niuV;
+        niuV=in.moveDownLeft(minX,minY);
+        for(Coor c:niuV.getCoorsX()) pi.setColor((int)c.x,(int)(c.y), Color.BLACK);
+        for(Coor c:niuV.getCoorsY()) pi.setColor((int)c.x,(int)(c.y),Color.BLACK);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         VectorialImage that = (VectorialImage) o;
-        return Objects.equals(vectorList, that.vectorList) && Objects.equals(archList, that.archList);
+        return Objects.equals(segmentList, that.segmentList) && Objects.equals(archList, that.archList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(vectorList, archList);
+        return Objects.hash(segmentList, archList);
     }
     @Override
     public String toString(){
@@ -142,7 +139,7 @@ public class VectorialImage {
         for(Arch in:archList) {
             out+="\n"+in;
         }
-        for(Vector in:vectorList) {
+        for(Segment in: segmentList) {
             out+="\n"+in;
         }
         return out;

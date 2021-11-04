@@ -62,6 +62,22 @@ public class Blob {
         out.lista.addAll(due.lista);
         return out;
     }
+    public static Blob removeMargin(Blob in){
+        in=in.getCopy();
+        int minX= in.getLefter(),minY= in.getDowner();
+        for (Coor current:
+             in.lista) {
+            current.x-=minX;
+            current.y-=minY;
+        }
+        return in;
+    }
+    public Blob getCopy(){
+        Blob out=new Blob();
+        for (Coor current:
+                lista) out.add(current);
+        return out;
+    }
     @Override
     public String toString(){
         int left=getLefter(),down=getDowner();

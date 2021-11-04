@@ -2,10 +2,10 @@ package pack.characterrecognition.supportClass;
 
 import java.util.LinkedList;
 
-public class BlobVector extends Vector{
+public class BlobSegment extends Segment {
     protected LinkedList<Coor> lista=new LinkedList<>();
 
-    public BlobVector(Coor st){
+    public BlobSegment(Coor st){
         super(st.getCopy(),st.getCopy());
         lista.add(st.getCopy());
     }

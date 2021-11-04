@@ -1,5 +1,6 @@
 package pack.characterrecognition.supportClass;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -13,12 +14,12 @@ public class VectorialMap extends VectorialImage{
         super();
         points=new LinkedList<>();
         for(Arch a:in.archList)archList.add(a.getCopy());
-        for(Vector a:in.vectorList)vectorList.add(a.getCopy());
+        for(Segment a:in.segmentList) segmentList.add(a.getCopy());
     }
     public void enchant(){
         double height=0,width=0;
-        for (Vector v:
-             vectorList) {
+        for (Segment v:
+                segmentList) {
             if(v.s.x>width)
                 width=v.s.x;
             if(v.s.y>height)
@@ -45,47 +46,53 @@ public class VectorialMap extends VectorialImage{
             if(further.y>height)
                 height=further.y;
         }
+        points.clone();
         double smallCoefficent=height/7,angleCoefficent=Math.PI*0.5;
-        for (Vector v:
-                vectorList)
+        for (Segment v:
+                segmentList)
             checkFormForPoints(v,smallCoefficent);
         for (Arch a:
-                archList) {
+                archList)
             checkFormForPoints(a,smallCoefficent);
-        }
         for (GraphPoint gp:
-             points) {
+             points)
             checkForLinearVector(gp,angleCoefficent);
-        }
     }
-    private void checkFormForPoints(Vector in,double smallCoefficent){
-        for (GraphPoint gp:
-             points) {
-            if(Coor.areNear(in.s,gp,smallCoefficent)){
+    private void checkFormForPoints(Segment in, double smallCoefficent){
+        Iterator<GraphPoint> i=points.iterator();
+        GraphPoint gp;
+        boolean notSFind=true,notEFind=true;
+        while(i.hasNext()&&(notSFind||notEFind)){
+            gp=i.next();
+            if(notSFind&&Coor.areNear(in.s,gp,smallCoefficent)){
                 gp.addStart(in);
                 in.setS(gp.getCopy());
-            }else{
-                GraphPoint added=new GraphPoint(in.s);
-                added.addStart(in);
-                points.add(added);
+                notSFind=false;
             }
-            if(Coor.areNear(in.e,gp,smallCoefficent)){
-                gp.addEnd(in);
+            if(notEFind&&Coor.areNear(in.e,gp,smallCoefficent)){
+                gp.addStart(in);
                 in.setE(gp.getCopy());
-            }else{
-                GraphPoint added=new GraphPoint(in.e);
-                added.addEnd(in);
-                points.add(added);
+                notEFind=false;
             }
+        }
+        if(notEFind){
+            GraphPoint added=new GraphPoint(in.e);
+            added.addEnd(in);
+            points.add(added);
+        }
+        if(notSFind){
+            GraphPoint added=new GraphPoint(in.s);
+            added.addStart(in);
+            points.add(added);
         }
     }
     public void checkForLinearVector(GraphPoint gp, double angleCoefficent) {
-        for (Vector v:
+        for (Segment v:
                 gp.getStart()){
-            for (Vector second:
+            for (Segment second:
                     gp.getStart()){
-                if(v!=second&& !(v instanceof Arch) && !(second instanceof Arch) && Vector.areSemiParallel(v,second,angleCoefficent)){
-                    Vector due=new Vector(v.e,second.e);
+                if(v!=second&& !(v instanceof Arch) && !(second instanceof Arch) && Segment.areSemiContigous(v,second,angleCoefficent)){
+                    Segment due=new Segment(v.e,second.e);
                     gp.move(due.getNearestPointOnThis(gp));
                     for (GraphPoint punto:
                          points) {
@@ -100,10 +107,10 @@ public class VectorialMap extends VectorialImage{
                     }
                 }
             }
-            for (Vector second:
+            for (Segment second:
                     gp.getEnd()){
-                if(v!=second&& !(v instanceof Arch) && !(second instanceof Arch) && Vector.areSemiParallel(v,second,angleCoefficent)){
-                    Vector due=new Vector(v.e,second.s);
+                if(v!=second&& !(v instanceof Arch) && !(second instanceof Arch) && Segment.areSemiContigous(v,second,angleCoefficent)){
+                    Segment due=new Segment(v.e,second.s);
                     gp.move(due.getNearestPointOnThis(gp));
                     for (GraphPoint punto:
                             points) {
@@ -119,12 +126,12 @@ public class VectorialMap extends VectorialImage{
                 }
             }
         }
-        for (Vector v:
+        for (Segment v:
                 gp.getEnd()) {
-            for (Vector second:
+            for (Segment second:
                     gp.getStart()){
-                if(v!=second&& !(v instanceof Arch) && !(second instanceof Arch) && Vector.areSemiParallel(v,second,angleCoefficent)){
-                    Vector due=new Vector(v.s,second.e);
+                if(v!=second&& !(v instanceof Arch) && !(second instanceof Arch) && Segment.areSemiContigous(v,second,angleCoefficent)){
+                    Segment due=new Segment(v.s,second.e);
                     gp.move(due.getNearestPointOnThis(gp));
                     for (GraphPoint punto:
                             points) {
@@ -139,10 +146,10 @@ public class VectorialMap extends VectorialImage{
                     }
                 }
             }
-            for (Vector second:
+            for (Segment second:
                     gp.getEnd()){
-                if(v!=second&& !(v instanceof Arch) && !(second instanceof Arch) && Vector.areSemiParallel(v,second,angleCoefficent)){
-                    Vector due=new Vector(v.s,second.s);
+                if(v!=second&& !(v instanceof Arch) && !(second instanceof Arch) && Segment.areSemiContigous(v,second,angleCoefficent)){
+                    Segment due=new Segment(v.s,second.s);
                     gp.move(due.getNearestPointOnThis(gp));
                     for (GraphPoint punto:
                             points) {
