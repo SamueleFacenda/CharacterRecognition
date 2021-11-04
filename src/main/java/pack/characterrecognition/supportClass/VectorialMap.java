@@ -47,7 +47,7 @@ public class VectorialMap extends VectorialImage{
                 height=further.y;
         }
         points.clone();
-        double smallCoefficent=height/7,angleCoefficent=Math.PI*0.5;
+        double smallCoefficent=height/7,angleCoefficent=Math.PI*0.25;
         for (Segment v:
                 segmentList)
             checkFormForPoints(v,smallCoefficent);
@@ -94,11 +94,16 @@ public class VectorialMap extends VectorialImage{
                 if(v!=second&& !(v instanceof Arch) && !(second instanceof Arch) && Segment.areSemiContigous(v,second,angleCoefficent)){
                     Segment due=new Segment(v.e,second.e);
                     gp.move(due.getNearestPointOnThis(gp));
+                    gp.getStart().remove(v);
+                    gp.getStart().remove(second);
+                    segmentList.remove(v);
+                    segmentList.remove(second);
+                    segmentList.add(due);
                     for (GraphPoint punto:
                          points) {
                         if(punto.getEnd().contains(v)){
                             punto.getEnd().remove(v);
-                            punto.getEnd().add(due);
+                            punto.getStart().add(due);
                         }
                         if(punto.getEnd().contains(second)){
                             punto.getEnd().remove(second);
@@ -112,15 +117,20 @@ public class VectorialMap extends VectorialImage{
                 if(v!=second&& !(v instanceof Arch) && !(second instanceof Arch) && Segment.areSemiContigous(v,second,angleCoefficent)){
                     Segment due=new Segment(v.e,second.s);
                     gp.move(due.getNearestPointOnThis(gp));
+                    gp.getEnd().remove(second);
+                    gp.getStart().remove(v);
+                    segmentList.remove(v);
+                    segmentList.remove(second);
+                    segmentList.add(due);
                     for (GraphPoint punto:
                             points) {
                         if(punto.getEnd().contains(v)){
                             punto.getEnd().remove(v);
-                            punto.getEnd().add(due);
+                            punto.getStart().add(due);
                         }
                         if(punto.getStart().contains(second)){
                             punto.getStart().remove(second);
-                            punto.getStart().add(due);
+                            punto.getEnd().add(due);
                         }
                     }
                 }
@@ -133,6 +143,11 @@ public class VectorialMap extends VectorialImage{
                 if(v!=second&& !(v instanceof Arch) && !(second instanceof Arch) && Segment.areSemiContigous(v,second,angleCoefficent)){
                     Segment due=new Segment(v.s,second.e);
                     gp.move(due.getNearestPointOnThis(gp));
+                    gp.getEnd().remove(v);
+                    gp.getStart().remove(second);
+                    segmentList.remove(v);
+                    segmentList.remove(second);
+                    segmentList.add(due);
                     for (GraphPoint punto:
                             points) {
                         if(punto.getStart().contains(v)){
@@ -151,6 +166,11 @@ public class VectorialMap extends VectorialImage{
                 if(v!=second&& !(v instanceof Arch) && !(second instanceof Arch) && Segment.areSemiContigous(v,second,angleCoefficent)){
                     Segment due=new Segment(v.s,second.s);
                     gp.move(due.getNearestPointOnThis(gp));
+                    gp.getEnd().remove(v);
+                    gp.getEnd().remove(second);
+                    segmentList.remove(v);
+                    segmentList.remove(second);
+                    segmentList.add(due);
                     for (GraphPoint punto:
                             points) {
                         if(punto.getStart().contains(v)){
@@ -159,12 +179,65 @@ public class VectorialMap extends VectorialImage{
                         }
                         if(punto.getStart().contains(second)){
                             punto.getStart().remove(second);
-                            punto.getStart().add(due);
+                            punto.getEnd().add(due);
                         }
                     }
                 }
             }
         }
+    }
+    public void scale(double fraction){
+        for (GraphPoint gp: points)
+            gp.move(new Coor(gp.x*fraction,gp.y*fraction));
+        for (GraphPoint gp: points)
+            System.out.println(gp);
+    }
+    static public double calcSimil(VectorialMap uno,VectorialMap due){
+        uno.scale(100.0/uno.getHeight());
+        due.scale(100.0/due.getHeight());
+        double minCoefficent=20,similVal=1;
+    }
+    public GraphPoint getHigher(){
+        if(points.size()==0)
+            return null;
+        else{
+            GraphPoint max=points.getFirst();
+            for(GraphPoint gp:points) if(gp.y>max.y) max=gp;
+            return max;
+        }
+    }
+    public GraphPoint getLefter(){
+        if(points.size()==0)
+            return null;
+        else{
+            GraphPoint max=points.getFirst();
+            for(GraphPoint gp:points) if(gp.x<max.x) max=gp;
+            return max;
+        }
+    }
+    public GraphPoint getDowner(){
+        if(points.size()==0)
+            return null;
+        else{
+            GraphPoint max=points.getFirst();
+            for(GraphPoint gp:points) if(gp.y<max.y) max=gp;
+            return max;
+        }
+    }
+    public GraphPoint getRighter(){
+        if(points.size()==0)
+            return null;
+        else{
+            GraphPoint max=points.getFirst();
+            for(GraphPoint gp:points) if(gp.x>max.x) max=gp;
+            return max;
+        }
+    }
+    public double getHeight(){
+        return getHigher().y-getDowner().y;
+    }
+    public double getWidth(){
+        return getRighter().x-getLefter().x;
     }
     @Override
     public boolean equals(Object o) {

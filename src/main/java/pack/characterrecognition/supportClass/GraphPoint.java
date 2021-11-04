@@ -32,5 +32,15 @@ public class GraphPoint extends Coor{
         x=in.x;
         y=in.y;
     }
+    @Override public String toString(){
+        String out="GraphPoint: "+super.toString();
+        for (Segment s:
+             start)
+            out+="\nstart: "+s.toString();
+        for (Segment s:
+                end)
+            out+="\nend: "+s.toString();
+        return out;
+    }
 
 }
