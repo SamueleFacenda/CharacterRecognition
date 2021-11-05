@@ -54,10 +54,15 @@ public class VectorialMap extends VectorialImage{
         for (Arch a:
                 archList)
             checkFormForPoints(a,smallCoefficent);
+        checkFormForArch();
         for (GraphPoint gp:
              points)
             checkForLinearVector(gp,angleCoefficent);
     }
+
+    private void checkFormForArch() {
+    }
+
     private void checkFormForPoints(Segment in, double smallCoefficent){
         Iterator<GraphPoint> i=points.iterator();
         GraphPoint gp;
@@ -195,7 +200,70 @@ public class VectorialMap extends VectorialImage{
     static public double calcSimil(VectorialMap uno,VectorialMap due){
         uno.scale(100.0/uno.getHeight());
         due.scale(100.0/due.getHeight());
-        double minCoefficent=20,similVal=1;
+        double minCoefficent=20;
+        LinkedList<GraphPoint>  lUno= new LinkedList<>(uno.points),lDue=new LinkedList<>(due.points);
+        return 0;
+    }
+    private static boolean haveSameBridges(LinkedList<GraphPoint> uno,LinkedList<GraphPoint> due){
+        if(uno.size()== due.size()){
+            return confrontGrahpGrid(generateGrid(uno),generateGrid(due));
+        }else
+            return false;
+    }
+    private static boolean confrontGrahpGrid(boolean[][] uno,boolean[][] due){
+        return false;
+    }
+    private static int getBridge(boolean[] in){
+        int i=0;
+        for (boolean boo:
+             in) {
+            if(boo)
+                i++;
+        }
+        return i;
+    }
+    private static boolean[][] generateGrid(LinkedList<GraphPoint> in){
+        boolean[][] out=new boolean[in.size()][in.size()];
+        int i=0,secondI;
+        for (GraphPoint gp:
+             in) {
+            secondI=0;
+            for (GraphPoint second:
+                    in) {
+                for (Segment s:
+                     gp.getStart()) {
+                    if (second.getEnd().contains(s)) {
+                        out[i][secondI] = true;
+                        break;
+                    }
+                }
+                for (Segment s:
+                        gp.getEnd()) {
+                    if (second.getStart().contains(s)) {
+                        out[i][secondI] = true;
+                        break;
+                    }
+                }
+                secondI++;
+            }
+            i++;
+        }
+        return out;
+    }
+    private static boolean equalsBooleanGrid(boolean[][] uno,boolean[][] due){
+        if(uno.length==0 &&due.length==0)
+            return true;
+        else if(uno.length== due.length&&uno[0].length==due[0].length){
+            int row=0,col;
+            do{
+                col=0;
+                while (col<uno[0].length && uno[row][col]==due[row][col])
+                    col++;
+                row++;
+            }while(row<uno.length && col==uno[0].length);
+            return col==uno[0].length;
+        }else
+            return false;
     }
     public GraphPoint getHigher(){
         if(points.size()==0)
