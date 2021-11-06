@@ -8,6 +8,10 @@ import javafx.scene.paint.Color;
 import java.util.LinkedList;
 import java.util.Objects;
 
+/**
+ * classe immagine vettoriale, è formata da segmenti e archi, ha metodi di utilità come quello
+ * che la converte in immagine(javafx), utlile per la calsse figlio veectorialmap
+ */
 public class VectorialImage {
     protected LinkedList<Segment> segmentList;
 
@@ -29,6 +33,12 @@ public class VectorialImage {
     public Segment getVector(int index){
         return index< segmentList.size()? segmentList.get(index):null;
     }
+
+    /**
+     * ritorn un'immagine javafx che rappresenta questa immagine vettoriale, scrive un pixel nero
+     * nelle coordinate dei segemnti e archi, con i metodi getCoors(), x e y.
+     * @return
+     */
     public Image toImage(){
         double maxY,maxX,minY,minX;
         if(segmentList.size()>=1){
@@ -42,6 +52,7 @@ public class VectorialImage {
             minX=archList.get(0).getXE();
             minY=archList.get(0).getXE();
         }
+        //trovo gli angoli dell'immagine(naggiore x e y tra tutti i vertici
         for(Segment v: segmentList){
             if(v.s.x>maxX)
                 maxX=v.s.x;
@@ -68,6 +79,7 @@ public class VectorialImage {
                     minY=v.e.y;
             }
         }
+        Coor further;
         for(Arch v:archList){
             if(v.s.x>maxX)
                 maxX=v.s.x;
@@ -89,28 +101,28 @@ public class VectorialImage {
             }
             if(v.e.y>maxY)
                 maxY=v.e.y;
-            else{
-                if(v.e.y<minY)
-                    minY=v.e.y;
+            else {
+                if (v.e.y < minY)
+                    minY = v.e.y;
             }
-            if(v.p.x>maxX)
-                maxX=v.p.x;
+            further=v.getFurtherPoint();
+            if(further.x>maxX)
+                maxX=further.x;
             else{
-                if(v.p.x<minX)
-                    minX=v.p.x;
+                if(further.x<minX)
+                    minX=further.x;
             }
-            if(v.p.y>maxY)
-                maxY=v.p.y;
+            if(further.y>maxY)
+                maxY=further.y;
             else{
-                if(v.p.y<minY)
-                    minY=v.p.y;
+                if(further.y<minY)
+                    minY=further.y;
             }
         }
         WritableImage img=new WritableImage((int)(maxX-minX+2),(int)(maxY-minY+2));
         PixelWriter pi=img.getPixelWriter();
         for(Arch in:archList) copyCoors(minY, minX, pi, in);
-        for(Segment in: segmentList)
-            copyCoors(minY, minX, pi, in);
+        for(Segment in: segmentList) copyCoors(minY, minX, pi, in);
         return img;
     }
 

@@ -3,13 +3,29 @@ package pack.characterrecognition.supportClass;
 import java.util.LinkedList;
 import java.util.Objects;
 
+/**
+ * class eestensione di segment, aggiunge un terzo punto per la creazione di un arco
+ * @author Samuele Facenda
+ */
 public class Arch extends Segment {
     protected Coor p;//terzo punto dell'arco oltre all'inizio e alla fine
+    /**
+     * dynamic programming variabile
+     */
     private double radE,radS;
     public Arch(int xS, int yS, int xE, int yE,int pX,int pY) {
         super(xS, yS, xE, yE);
         p=new Coor(pX,pY);
+        calcRad();
     }
+
+    /**
+     * quando viene chiamato il costruttore calcolo i radianti dei punti e li salvo in modo che siano contigui
+     * in senso antiorario(senso dei radianti), con prima s(start), poi p(terzo punto) e poi e(end)
+     * @param s
+     * @param e
+     * @param p
+     */
     public Arch(Coor s,Coor e,Coor p){
         super(s,e);
         this.p=p.getCopy();
@@ -17,6 +33,7 @@ public class Arch extends Segment {
         double raggio=getRadius(),sDeltaX= s.x-center.x,radS= s.y> center.y?Math.acos(sDeltaX/raggio):Math.PI*2-Math.acos(sDeltaX/raggio);
         double eDeltaX= e.x-center.x,radE= e.y> center.y?Math.acos(eDeltaX/raggio):Math.PI*2-Math.acos(eDeltaX/raggio);
         double pDeltaX= p.x-center.x,radP= p.y> center.y?Math.acos(pDeltaX/raggio):Math.PI*2-Math.acos(pDeltaX/raggio);
+        //controllo e correggo i radianti in modo che siano con radianti continui, con il terzo punto in mezzo
         if(radE>radP&&radS>radP){
             if(radE>radS)
                 radE-=2.0*Math.PI;
@@ -46,6 +63,10 @@ public class Arch extends Segment {
         super();
     }
 
+    /**
+     * calcolo del centro dell'arco, intersezione degli assi dei segmenti che collegano i vertici al terzo punto
+     * @return centro
+     */
     public Coor getCenter(){
         Coor m1=Coor.getPMedio(s,p),m2=Coor.getPMedio(p,e);
         double p1=-1.0/ Segment.getPendenzaDuePunti(s,p),p2=-1.0/ Segment.getPendenzaDuePunti(p,e);
@@ -53,12 +74,23 @@ public class Arch extends Segment {
         double x=(yA2-yA1)/(p1-p2);
         return new Coor(x,p1*x+yA1);
     }
+
+    /**
+     * raggio dell'arco, distanz adi uno dei tre punti dal centro
+     * @return
+     */
     public double getRadius(){
         return Coor.getDist(s,getCenter());
     }
+
+    /**
+     * calcolo del punto dell'arco più lontano dalla retta che attraversa il segmento
+     * @return
+     */
     public Coor getFurtherPoint(){
         Coor center=getCenter();
         double raggio=getRadius(),medRadFrat=(radS+radE)/2.0/Math.PI,outX,outY;
+        //calcolo radianti a metà tra l'inizio e la fine
         if((medRadFrat>0&&medRadFrat<1)||(medRadFrat>2&&medRadFrat<3)||(medRadFrat>-4&&medRadFrat<-2))
             outY= center.y+ raggio*Math.sin((radS+radE)/2.0);
         else
@@ -149,6 +181,10 @@ public class Arch extends Segment {
         out.radE=radE;
         return out;
     }
+
+    /**
+     * ricalcolo dei radianti dei punti comenel costruttore principale, usato se modifico i vertici
+     */
     private void calcRad(){
         Coor center=getCenter();
         double raggio=getRadius(),sDeltaX= s.x-center.x,radS= s.y> center.y?Math.acos(sDeltaX/raggio):Math.PI*2-Math.acos(sDeltaX/raggio);

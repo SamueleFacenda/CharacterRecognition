@@ -5,6 +5,10 @@ import javafx.scene.image.PixelReader;
 
 import java.util.LinkedList;
 
+/**
+ * array di coordinate con metodi di utilità, autoesplicativi
+ * @author Samuele Facenda
+ */
 public class Blob {
     protected LinkedList<Coor> lista;
     public Blob(){
@@ -62,6 +66,12 @@ public class Blob {
         out.lista.addAll(due.lista);
         return out;
     }
+
+    /**
+     * sposta tutte le coordinate in modo che ogni asse cartesiano venga toccato da almeno un punto
+     * @param in
+     * @return
+     */
     public static Blob removeMargin(Blob in){
         in=in.getCopy();
         int minX= in.getLefter(),minY= in.getDowner();

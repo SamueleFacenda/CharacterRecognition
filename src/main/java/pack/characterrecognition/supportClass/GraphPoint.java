@@ -2,6 +2,11 @@ package pack.characterrecognition.supportClass;
 
 import java.util.LinkedList;
 
+/**
+ * classe di utilità per le vectorialmap, un punto così è caratterizzato oltre che dalle coordinate
+ * dai segmenti che partono e arrivano al punto
+ * @author Samuele Facenda
+ */
 public class GraphPoint extends Coor{
     private LinkedList<Segment> start,end;
     public GraphPoint(Coor in) {
@@ -21,6 +26,11 @@ public class GraphPoint extends Coor{
     public LinkedList<Segment> getEnd(){
         return end;
     }
+
+    /**
+     * sposta il punto e tutti i vertici dei segmenti che arrivano al punto alla coordinata inserita
+     * @param in punto sucui spostare questo incrocio
+     */
     public void move(Coor in){
         for (Segment v:
                 start)
