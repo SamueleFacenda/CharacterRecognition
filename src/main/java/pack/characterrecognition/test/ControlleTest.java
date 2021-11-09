@@ -19,8 +19,6 @@ public class ControlleTest {
         vi.add(new Segment(10,20,130,150));
         vi.add(new Segment(135,150,300,300));
         vi.add(new Segment(140,148,300,20));
-        DataAccess.add('b',new VectorialMap(vi));
-        FileSaverCharacter.read();
         VectorialMap vm=new VectorialMap(vi);
         vm.enchant();
         lbl1.setText(vm.toString());

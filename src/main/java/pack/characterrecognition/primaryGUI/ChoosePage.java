@@ -17,6 +17,7 @@ import org.kordamp.bootstrapfx.BootstrapFX;
 import pack.characterrecognition.CharApp;
 import pack.characterrecognition.supportClass.CharacterRecognizor;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class ChoosePage {
@@ -45,8 +46,12 @@ public class ChoosePage {
             }
         });
     }
-    public void setImg(WritableImage in){
-        cr=new CharacterRecognizor(in);
+    public void setImg(WritableImage in) {
+        try{
+            cr=new CharacterRecognizor(in);
+        }catch (FileNotFoundException e){
+            System.out.println(e.getMessage());
+        }
         lbl.setText(cr.recognise()?"carattere: "+cr.getChar():"carattere sconosciuto");
     }
 

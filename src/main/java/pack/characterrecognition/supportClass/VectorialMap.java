@@ -54,13 +54,9 @@ public class VectorialMap extends VectorialImage{
         for (Arch a:
                 archList)
             checkFormForPoints(a,smallCoefficent);
-        checkFormForArch();
         for (GraphPoint gp:
              points)
             checkForLinearVector(gp,angleCoefficent);
-    }
-
-    private void checkFormForArch() {
     }
 
     private void checkFormForPoints(Segment in, double smallCoefficent){
@@ -198,11 +194,22 @@ public class VectorialMap extends VectorialImage{
             System.out.println(gp);
     }
     static public double calcSimil(VectorialMap uno,VectorialMap due){
-        uno.scale(100.0/uno.getHeight());
+        /*uno.scale(100.0/uno.getHeight());
         due.scale(100.0/due.getHeight());
         double minCoefficent=20;
-        LinkedList<GraphPoint>  lUno= new LinkedList<>(uno.points),lDue=new LinkedList<>(due.points);
-        return 0;
+        if(confrontGrahpGrid(generateGrid(uno.points),generateGrid(due.points)));{
+            double out=1;
+            Iterator<Segment> itUno=uno.segmentList.iterator(),itDue=due.segmentList.iterator();
+            double diff;
+            while(itUno.hasNext()){
+                diff=Math.abs(itUno.next().getLen()-itDue.next().getLen());
+                if(diff>minCoefficent){
+                    diff-=minCoefficent;
+                    diff
+                }
+            }
+        }*/
+        return confrontGrahpGrid(generateGrid(uno.points),generateGrid(due.points))?1:0;
     }
     private static boolean haveSameBridges(LinkedList<GraphPoint> uno,LinkedList<GraphPoint> due){
         if(uno.size()== due.size()){
