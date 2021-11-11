@@ -261,4 +261,10 @@ public class Segment {
     public String toString(){
         return "Segmento: \n"+"start: "+s+"\nend: "+e;
     }
+    public static boolean areSimilar(Segment uno,Segment due,double minValue){
+        if(Coor.areNear(uno.s,due.s,minValue))
+            return Coor.areNear(uno.e,due.e,minValue);
+        else
+            return Coor.areNear(uno.e,due.s,minValue)&&Coor.areNear(uno.s,due.e,minValue);
+    }
 }

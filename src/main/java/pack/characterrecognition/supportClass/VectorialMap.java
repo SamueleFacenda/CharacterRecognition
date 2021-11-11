@@ -209,7 +209,15 @@ public class VectorialMap extends VectorialImage{
                 }
             }
         }*/
-        return confrontGrahpGrid(generateGrid(uno.points),generateGrid(due.points))?1:0;
+        //return confrontGrahpGrid(generateGrid(uno.points),generateGrid(due.points))?1:0;
+        double val=0,minCoefficent=20;
+        Iterator<Segment> segUno=uno.segmentList.iterator(),segDue=due.segmentList.iterator();
+        while(segUno.hasNext()&&segDue.hasNext())
+            if(Segment.areSimilar(segUno.next(), segDue.next(), minCoefficent)) val++;
+        Iterator<Arch> arcUno=uno.archList.iterator(),arcDue=due.archList.iterator();
+        while(arcUno.hasNext()&&arcDue.hasNext())
+            if(Segment.areSimilar(segUno.next(), segDue.next(), minCoefficent)) val++;
+        return  val/(Integer.max(uno.segmentList.size(),due.segmentList.size())+Integer.max(uno.archList.size(),due.archList.size()));
     }
     private static boolean haveSameBridges(LinkedList<GraphPoint> uno,LinkedList<GraphPoint> due){
         if(uno.size()== due.size()){
