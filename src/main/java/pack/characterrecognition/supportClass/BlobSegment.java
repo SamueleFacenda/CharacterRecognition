@@ -57,4 +57,10 @@ public class BlobSegment extends Segment {
         else
             return (p.x<h.x||p.y>h.y)&&(p.x>d.x||p.y<d.y);
     }
+    public BlobSegment getCopy(){
+        BlobSegment out=new BlobSegment(s);
+        out.moveEnd(e);
+        out.lista.addAll(lista);
+        return out;
+    }
 }

@@ -210,7 +210,7 @@ public class VectorialMap extends VectorialImage{
             }
         }*/
         //return confrontGrahpGrid(generateGrid(uno.points),generateGrid(due.points))?1:0;
-        double val=0,minCoefficent=20;
+        double val=0,minCoefficent=5;
         Iterator<Segment> segUno=uno.segmentList.iterator(),segDue=due.segmentList.iterator();
         while(segUno.hasNext()&&segDue.hasNext())
             if(Segment.areSimilar(segUno.next(), segDue.next(), minCoefficent)) val++;

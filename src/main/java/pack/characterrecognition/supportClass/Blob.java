@@ -107,4 +107,11 @@ public class Blob {
         }
         return out;
     }
+    public boolean[][] toBooleanGrid(){
+        boolean[][] out=new boolean[getRigther()][getUpper()];
+        for (Coor c:
+             lista)
+            out[(int)c.y][(int)c.x]=true;
+        return out;
+    }
 }

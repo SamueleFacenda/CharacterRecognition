@@ -267,4 +267,7 @@ public class Segment {
         else
             return Coor.areNear(uno.e,due.s,minValue)&&Coor.areNear(uno.s,due.e,minValue);
     }
+    public double getRad(){
+        return Coor.calcRad(s,e);
+    }
 }

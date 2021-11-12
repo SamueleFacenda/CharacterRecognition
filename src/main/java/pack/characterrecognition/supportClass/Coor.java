@@ -102,4 +102,10 @@ public class Coor {
     public static boolean areNear(Coor uno,Coor due,double radius){
         return getDist(uno,due)<=radius;
     }
+    public static double calcRad(Coor s,Coor e){
+        if(s.y>e.y)
+            return Math.acos((s.x-e.x)/getDist(s,e));
+        else
+            return Math.PI*2-Math.acos((s.x-e.x)/getDist(s,e));
+    }
 }
