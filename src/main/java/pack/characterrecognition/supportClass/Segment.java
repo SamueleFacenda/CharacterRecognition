@@ -115,7 +115,7 @@ public class Segment {
      * @return
      */
     public static double getPendenzaDuePunti(Coor uno,Coor due ){
-        if(Double.compare(uno.x,due.x)==0)
+        if(DoubleCompare.areEquals(uno.x,due.x))
             return Double.MAX_VALUE;
         else
             return (uno.y-due.y)/(uno.x-due.x);
@@ -137,9 +137,9 @@ public class Segment {
      */
     public Coor[] getCoorsX(){
         double m=getPendenza(),q=getYAxis(),start=Double.min(s.x,e.x);
-        if(Double.compare(e.x,s.x)==0)
+        if(DoubleCompare.areEquals(e.x,s.x))
             return new Coor[]{s.getCopy(),e.getCopy()};
-        else if(Double.compare(e.y,s.y)==0){
+        else if(DoubleCompare.areEquals(e.y,s.y)){
             Coor[] out = new Coor[(int) Math.abs(s.x - e.x)];
             for (int i = (int) start; i < start + out.length; i++)
                 out[(int) (i - start)] = new Coor(i, s.y);
@@ -159,9 +159,9 @@ public class Segment {
      */
     public Coor[] getCoorsY(){
         double m=getPendenza(),q=getYAxis(),start=Double.min(s.y,e.y);
-        if(Double.compare(e.y,s.y)==0)
+        if(DoubleCompare.areEquals(e.y,s.y))
             return new Coor[]{s.getCopy(),e.getCopy()};
-        else if(Double.compare(e.x,s.x)==0){
+        else if(DoubleCompare.areEquals(e.x,s.x)){
             Coor[] out = new Coor[(int) Math.abs(s.y - e.y)];
             for (int i = (int) start; i < start + out.length; i++)
                 out[(int) (i - start)] = new Coor(s.x,i);
@@ -234,9 +234,9 @@ public class Segment {
      * @return proezione del punto sulla retta
      */
     public Coor getNearestPointOnThis(Coor in){
-        if(Double.compare(e.y,s.y)==0)
+        if(DoubleCompare.areEquals(e.y,s.y))
             return new Coor(in.x,s.y);
-        else if(Double.compare(e.x,s.x)==0){
+        else if(DoubleCompare.areEquals(e.x,s.x)){
             return new Coor(s.x,in.y);
         }else{
             double pendenza=getPendenza(),pendenzaStorta=pendenza==0?Double.MAX_VALUE:-1.0/pendenza;

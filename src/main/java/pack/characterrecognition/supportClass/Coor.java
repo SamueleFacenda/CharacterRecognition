@@ -7,7 +7,7 @@ import java.util.Objects;
  * , con alcuni metodi di utilità
  * @author Samuele Facenda
  */
-public class Coor {
+public class Coor{
     /**
      * la posizione sull'asse x o y del punto
      */
@@ -68,7 +68,7 @@ public class Coor {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Coor coor = (Coor) o;
-        return Double.compare(coor.x, x) == 0 && Double.compare(coor.y, y) == 0;
+        return DoubleCompare.areEquals(coor.x, x) && DoubleCompare.areEquals(coor.y, y);
     }
 
     @Override
@@ -103,7 +103,9 @@ public class Coor {
         return getDist(uno,due)<=radius;
     }
     public static double calcRad(Coor s,Coor e){
-        if(s.y>e.y)
+        if(s.equals(e))
+            return Math.PI*4;
+        else if(s.y>e.y)
             return Math.acos((s.x-e.x)/getDist(s,e));
         else
             return Math.PI*2-Math.acos((s.x-e.x)/getDist(s,e));

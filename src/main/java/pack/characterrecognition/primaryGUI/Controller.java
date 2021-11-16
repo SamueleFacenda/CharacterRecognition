@@ -23,6 +23,7 @@ public class Controller {
         WritableImage writableImage = new WritableImage((int)canva.getWidth(),(int) canva.getHeight());
         canva.snapshot(null, writableImage);
         Stage ps= (Stage) canva.getScene().getWindow();
+        nuova();
         FXMLLoader fxmlLoader = new FXMLLoader(CharApp.class.getResource("choosePage.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 400, 400);
         ((ChoosePage)(fxmlLoader.getController())).setImg(writableImage);

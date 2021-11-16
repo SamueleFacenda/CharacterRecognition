@@ -129,8 +129,8 @@ public class VectorialImage {
     private void copyCoors(double minY, double minX, PixelWriter pi, Segment in) {
         Segment niuV;
         niuV=in.moveDownLeft(minX,minY);
-        for(Coor c:niuV.getCoorsX()) pi.setColor((int)c.x,(int)(c.y), Color.BLACK);
-        for(Coor c:niuV.getCoorsY()) pi.setColor((int)c.x,(int)(c.y),Color.BLACK);
+        for(Coor c:niuV.getCoorsX()) pi.setColor((int)(c.x<0?0:c.x),(int)(c.y<0?0:c.y), Color.BLACK);
+        for(Coor c:niuV.getCoorsY()) pi.setColor((int)(c.x<0?0:c.x),(int)(c.y<0?0:c.y),Color.BLACK);
     }
 
     @Override

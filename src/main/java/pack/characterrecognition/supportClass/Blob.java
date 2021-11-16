@@ -108,10 +108,10 @@ public class Blob {
         return out;
     }
     public boolean[][] toBooleanGrid(){
-        boolean[][] out=new boolean[getRigther()][getUpper()];
+        boolean[][] out=new boolean[getUpper()+1][getRigther()+1];
         for (Coor c:
              lista)
-            out[(int)c.y][(int)c.x]=true;
+            out[(int)Math.round(c.y)][(int)Math.round(c.x)]=true;
         return out;
     }
 }

@@ -6,9 +6,17 @@ public class BlobSegment extends Segment {
     protected LinkedList<Coor> lista=new LinkedList<>();
 
     public BlobSegment(Coor st){
-        super(st.getCopy(),st.getCopy());
+        super(st,st);
         lista.add(st.getCopy());
     }
+
+    public BlobSegment(Coor s, Coor e) {
+        super(s,e);
+        lista.add(s.getCopy());
+        if(!lista.contains(e))
+            lista.add(e.getCopy());
+    }
+
     public void moveEnd(Coor in){
         if(!lista.contains(in)){
             lista.add(in.getCopy());
