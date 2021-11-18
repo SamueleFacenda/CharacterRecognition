@@ -115,7 +115,7 @@ public class Segment {
      * @return
      */
     public static double getPendenzaDuePunti(Coor uno,Coor due ){
-        if(DoubleCompare.areEquals(uno.x,due.x))
+        if(DoubleUtils.areEquals(uno.x,due.x))
             return Double.MAX_VALUE;
         else
             return (uno.y-due.y)/(uno.x-due.x);
@@ -137,9 +137,9 @@ public class Segment {
      */
     public Coor[] getCoorsX(){
         double m=getPendenza(),q=getYAxis(),start=Double.min(s.x,e.x);
-        if(DoubleCompare.areEquals(e.x,s.x))
+        if(DoubleUtils.areEquals(e.x,s.x))
             return new Coor[]{s.getCopy(),e.getCopy()};
-        else if(DoubleCompare.areEquals(e.y,s.y)){
+        else if(DoubleUtils.areEquals(e.y,s.y)){
             Coor[] out = new Coor[(int) Math.abs(s.x - e.x)];
             for (int i = (int) start; i < start + out.length; i++)
                 out[(int) (i - start)] = new Coor(i, s.y);
@@ -159,9 +159,9 @@ public class Segment {
      */
     public Coor[] getCoorsY(){
         double m=getPendenza(),q=getYAxis(),start=Double.min(s.y,e.y);
-        if(DoubleCompare.areEquals(e.y,s.y))
+        if(DoubleUtils.areEquals(e.y,s.y))
             return new Coor[]{s.getCopy(),e.getCopy()};
-        else if(DoubleCompare.areEquals(e.x,s.x)){
+        else if(DoubleUtils.areEquals(e.x,s.x)){
             Coor[] out = new Coor[(int) Math.abs(s.y - e.y)];
             for (int i = (int) start; i < start + out.length; i++)
                 out[(int) (i - start)] = new Coor(s.x,i);
@@ -234,9 +234,9 @@ public class Segment {
      * @return proezione del punto sulla retta
      */
     public Coor getNearestPointOnThis(Coor in){
-        if(DoubleCompare.areEquals(e.y,s.y))
+        if(DoubleUtils.areEquals(e.y,s.y))
             return new Coor(in.x,s.y);
-        else if(DoubleCompare.areEquals(e.x,s.x)){
+        else if(DoubleUtils.areEquals(e.x,s.x)){
             return new Coor(s.x,in.y);
         }else{
             double pendenza=getPendenza(),pendenzaStorta=pendenza==0?Double.MAX_VALUE:-1.0/pendenza;
@@ -244,6 +244,10 @@ public class Segment {
             double x=(yPointStorto-yPoint)/(pendenza-pendenzaStorta);
             return new Coor(x,pendenza*x+yPoint);
         }
+    }
+    public void scale(double fract){
+        s.scale(fract);
+        e.scale(fract);
     }
     @Override
     public boolean equals(Object o) {

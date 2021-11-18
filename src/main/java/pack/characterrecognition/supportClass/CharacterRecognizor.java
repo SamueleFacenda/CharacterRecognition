@@ -12,6 +12,7 @@ public class CharacterRecognizor {
     private BufferedSaver bs;
     public CharacterRecognizor(WritableImage img) throws FileNotFoundException {
         map=new VectorialMap(new VectorialImageGenerator(Blob.removeMargin(new BlobGenerator(img).getBigger())));
+        //map.scalePerHeight(100);
         bs=new BufferedSaver();
     }
     public char getChar(){

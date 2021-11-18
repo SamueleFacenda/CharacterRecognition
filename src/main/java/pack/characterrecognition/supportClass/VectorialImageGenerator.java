@@ -3,12 +3,30 @@ package pack.characterrecognition.supportClass;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+/**
+ * classe per la generazione di immagini vettoriali da blob(forme in bianco e nero convertite).
+ * usa un approccio ricorsivo, il blob viene prima convertito in griglia booelana, per poter accedere
+ * velocemente alle celle, ci sono inoltre tre variabili in cui sono salvati valori utili.
+ * Questa classe é il cuore del mio riconoscimento caratteri, ogni riga di codice scritta qui è frutto
+ * della mia sola mente, senza aiuti o ispirazione internet.
+ * @author Samuele Facenda
+ */
+
 public class VectorialImageGenerator extends VectorialImage{
-    private final double rad360,deltaRad,diagonalHop;
+    /**
+     * rad360 è il valore in radianti di un giro completo(360º), viene usato molte volte.
+     * deltaRad è il valore metà dell'angolo che viene considerato "dietro" un segmento, viene calcolato come arctg di 2/1.1, in un quadrato
+     * 5*5 dal centro si riferisce all'area di lato tre perpendicolare al centro.
+     * diagonalHop é la lunghezza della diagonale della griglia divisa per due, saltando due celle in diagonale é la distanza lineare massima percorribile.
+     * archRadCoefficnt é il valore per cui due segmenti di angolo esterno minore di questo possono essere detti pezzo di un arco:
+     * è un po' meno di 90 gradi.
+    */
+    private final double rad360,deltaRad,diagonalHop,archRadCoefficent;
     private boolean[][] grid;
     public VectorialImageGenerator(Blob in){
         segmentList=new LinkedList<>();
         deltaRad=Math.atan(1.51/2.5);
+        archRadCoefficent=Math.toRadians(80);
         rad360=Math.PI*2;
         grid=in.toBooleanGrid();
         diagonalHop=Math.sqrt(Math.pow((double)grid.length/2+2, 2)+Math.pow((double)grid[0].length/2+2,2 ));
@@ -16,58 +34,107 @@ public class VectorialImageGenerator extends VectorialImage{
         while(!grid[(i/ grid[0].length)][i%grid[0].length]) i++;
         Coor start=new Coor((i/ grid[0].length),i%grid[0].length);
         generateBlobSegmentAtStart(start);
+        generateArchs();
     }
     private void generateArchs(){
+        
+    }
+    private LinkedList<Segment> findCurveSegment(Coor start, double radDirection, boolean orarSense){
+        LinkedList<Segment> out=null,currentList = null;
+        boolean isStorto;
+        for (Segment current:
+             segmentList) {
+            isStorto=Coor.areNear(start,current.e,0.05*grid.length);
+            if(isStorto || Coor.areNear(start,current.s,0.05*grid.length)){
+                if(isStorto)
+                    current=new Segment(current.e,current.s);
+                if(checkSegmentForContigousCurve(current,radDirection,orarSense)){
+                    currentList=findCurveSegment(current.e,current.getRad(),orarSense);
+                    if(currentList!=null && (out==null || currentList.size() > out.size())){
+                        out=currentList;
+                        currentList.addFirst(current);
+                    }else if(currentList == null && (out==null || (out.size()==1 && out.getFirst().getLen()<current.getLen()))){
+                        currentList=new LinkedList<>();
+                        currentList.addFirst(current);
+                        out=currentList;
+                    }else if(currentList != null && out!=currentList){
+                        currentList.addFirst(current);
+                        creatArch(currentList);
+                    }
+                }
+            }
+        }
+        return out;
+    }
+    public void creatArch(LinkedList<Segment> lista){
 
+    }
+    private boolean checkSegmentForContigousCurve(Segment check, double radDirection,boolean isOrarSense){
+        double radCheck= check.getRad();
+        if(isOrarSense){
+            if(radCheck>radDirection)
+                radCheck-=rad360;
+            radCheck=radDirection-radCheck;
+            return radCheck<archRadCoefficent;
+        }else{
+            if(radCheck<radDirection)
+                radCheck+=rad360;
+            radCheck-=radDirection;
+            return radCheck<archRadCoefficent;
+        }
     }
 
     /**
      * launcher del metodo ricorsivo per generare segmenti in tutte le direzioni
-     * @param s
+     * @param s la cella da cui partire
      */
     private void generateBlobSegmentAtStart(Coor s){
         Iterator<Segment> iter;
         BlobSegment blobSegBuffer;
+        //in ogni direzione
         for (Coor c :
                 getAroundDirection(s, 0,true)) {
+            //il metodo getArodundDirecton resitituisce null se la cella è fuori dalla griglia o non è nera
             if(c!=null){
-                blobSegBuffer = generateSegmentRecursive(new BlobSegment(s,c),diagonalHop);
-                iter=segmentList.iterator();
-                while(iter.hasNext() && !Segment.areSimilar(iter.next(), blobSegBuffer,5));
-                if(!iter.hasNext())
-                    segmentList.add(blobSegBuffer);
+                //genera dei segmenti a partire dalla cella s nella direzone corrente
+                addAfterCheck(generateSegmentRecursive(new BlobSegment(s,c),diagonalHop).toSegment());
             }
         }
     }
 
     /**
      * metodo ricorsivo per generare segmenti in una direzione
-     * @param bs
-     * @param ttl
+     * @param bs segmento da cui generare i continui
+     * @param ttl time to live, all'inizio è il massimo numero di richiami lineari che possono essere fatti per generare
+     *            un segmento, cioè la distanza della diagonale della griglia divisa 2, viene diminuito di uno ogni volta che
+     *            viene richiamata questa funzione in modo recorsivo, per evitare un loop infinito o molto lungo di chiamate
+     *            ricorsive
      * @return
      */
     private BlobSegment generateSegmentRecursive(BlobSegment bs,double ttl){
         BlobSegment out=bs;
+        //controlla se ha superato il limite di hop massimi(distanza da vertice a vertice divisa due nella griglia)
         if(ttl>=0) {
+            //calcola la pendenza attuale del segmento
             double radAng=Coor.calcRad(bs.s,bs.e);
+            //creo la lista in cui inseriere i segmenti generati da questo segmento nelle varie direzioni
             LinkedList<BlobSegment> currentList = new LinkedList<>();
             BlobSegment blobSegBuffer;
+            //controlla intorno per tutte le coordinate valide
             for (Coor c :
                     getAroundDirection(bs.e, radAng,false)) {
                 if(c!=null){
+                    //crea un nuovo BlobSegment copia e sposta la fine alla Coor corrente
                     blobSegBuffer = bs.getCopy();
                     blobSegBuffer.moveEnd(c);
-                    if (blobSegBuffer.getMaxDist() > 3) {
-                        blobSegBuffer = generateSegmentRecursive(new BlobSegment(bs.e,c),diagonalHop);
-                        Iterator<Segment> iter=segmentList.iterator();
-                        while(iter.hasNext() && !Segment.areSimilar(iter.next(), blobSegBuffer,5));
-                        if(!iter.hasNext())
-                            segmentList.add(blobSegBuffer);
-                    }
-                    else
+                    //se il segmento è più spesso di tre(due hop in diagonale)identifica una curva e lancia un generatore in quella direzione
+                    if (blobSegBuffer.getMaxDist() > 3)
+                        addAfterCheck(generateSegmentRecursive(new BlobSegment(bs.e,c),diagonalHop).toSegment());
+                    else //aggiunge alla lista corrente il segmento generato da quella cella, diminuisce di uno il ttl per questa generazione
                         currentList.add(generateSegmentRecursive(blobSegBuffer, ttl - 1));
                 }
             }
+            //cerco il segmento più lungo, se
             if (currentList.size() != 0) {
                 Iterator<BlobSegment> iterator = currentList.iterator();
                 out = iterator.next();
@@ -76,50 +143,104 @@ public class VectorialImageGenerator extends VectorialImage{
                     if (blobSegBuffer.getLen() > out.getLen())
                         out = blobSegBuffer;
                 }
+                //ritorna quello di partenza se è più lungo
+                if(out.getLen()<bs.getLen())
+                    out=bs;
             }
         }
         return out;
     }
+
+    /**
+     * metodo che ritorna le coordinate delle celle a distanza di due da quella inserita,
+     * se queste non sono esterne alla griglia e fanno parte della figura.
+     * Controlla inoltre la direzione delle celle da restituire in riferimento a quella inserita da parametro,
+     * se la cella da inserire è "indietro" rispetto alla direzione, questa non verrà inserita, ecco un esempio:
+     * radAng=PI/2(verticale in su)
+     * ok | ok | ok | ok | ok
+     * ----------------------
+     * ok |    |    |    | ok
+     * ----------------------
+     * ok |    | () |    | ok
+     * ----------------------
+     * ok |    |    |    | ok
+     * ----------------------
+     * ok | no | no | no | ok
+     * @param center cella centrale da cui prendere quelle intorno
+     * @param radAng pendenza in radianti della direzione da prendere
+     * @param isAllOk bypassa il check dei radianti, così vengono ritornate le coordinate a 360º
+     * @return le coordinate accettabili e presenti nella griglia intorno alla cella inserita da parametro
+     */
     private Coor[] getAroundDirection(Coor center,double radAng,boolean isAllOk){
-        double startNoZone=(radAng+Math.PI-deltaRad)%rad360,endNoZone=(radAng+Math.PI+deltaRad)%rad360;
+        //delta rad è il valore di metà zona non accettabile, prendo le coordinate opposte(mezzo giro dopo, +PI), aggiungendo e togliendo deltaRad
+        double startNoZone=radAng+Math.PI-deltaRad,endNoZone=radAng+Math.PI+deltaRad;
         int count=0;
         Coor[] out=new Coor[16];
-        if(endNoZone>startNoZone)
-            endNoZone+=rad360;
         Coor check;
         for (double i = center.x-2; i < center.x+3; i++){
             check=new Coor(i,center.y+2);
-            if(isAllOk || checkCoorInDirecton(center,check,startNoZone,endNoZone))
+            if(checkCoorInDirecton(center,check,startNoZone,endNoZone,isAllOk))
                 out[count]=check;
             count++;
             check=new Coor(i,center.y-2);
-            if(isAllOk ||checkCoorInDirecton(center,check,startNoZone,endNoZone))
+            if(checkCoorInDirecton(center,check,startNoZone,endNoZone,isAllOk))
                 out[count]=check;
             count++;
         }
         for (double i = center.y-1; i < center.y+2; i++){
             check=new Coor(center.x-2,i);
-            if(isAllOk ||checkCoorInDirecton(center,check,startNoZone,endNoZone))
+            if(checkCoorInDirecton(center,check,startNoZone,endNoZone,isAllOk))
                 out[count]=check;
             count++;
             check=new Coor(center.x+2,i);
-            if(isAllOk ||checkCoorInDirecton(center,check,startNoZone,endNoZone))
+            if(checkCoorInDirecton(center,check,startNoZone,endNoZone,isAllOk))
                 out[count]=check;
             count++;
         }
         return out;
     }
-    private boolean checkCoorInDirecton(Coor center,Coor check,double startNoZone,double endNoZone){
-        double radCheck=Coor.calcRad(center,check);
-         return check.x>=0 && check.x<grid[0].length && check.y>=0 && grid[(int) check.y][(int) check.x] && check.y<=grid.length&&!isGhegenuber(radCheck,startNoZone,endNoZone);
+
+    /**
+     * in base a quello inserito da parametro,
+     * controlla che non siano già presenti segmenti simili nella lista di segmenti, se non è così lo aggiunge
+     * @param blobSegBuffer
+     */
+    private void addAfterCheck(Segment blobSegBuffer){
+        Iterator<Segment> iter=segmentList.iterator();
+        while(iter.hasNext() && !Segment.areSimilar(iter.next(), blobSegBuffer,0.05*grid.length));
+        if(!iter.hasNext())
+            segmentList.add(blobSegBuffer);
     }
+
+    /**
+     * controlla la coordinata in base alle richieste del metodo getAroundDirection, quindi che la coordinata sia compresa nella griglia
+     * e che non sia compresa nella sua pendenza tra i radianti che limitano la zona in cui non accettare coordinate
+     * @param center cella centrale del cerchio, per il calcolo della pendenza delle cella
+     * @param check cella da controllare
+     * @param startNoZone radianti di inizio della zona di non accettabilità
+     * @param endNoZone radianti di fine della zona di non accettabilità
+     * @param isAllOk booleano per il bypass del controllo sui radianti
+     * @return se la cella soddisfa tutti i criteri richiesti
+     */
+    private boolean checkCoorInDirecton(Coor center,Coor check,double startNoZone,double endNoZone,boolean isAllOk){
+        double radCheck=Coor.calcRad(center,check);
+        //controllo che sia compreso nella griglia e la cella si piena(pixel nero)
+        boolean out=check.x>=0 && check.x<grid[0].length && check.y>=0 && check.y< grid.length && grid[DoubleUtils.toInt(check.y)][DoubleUtils.toInt(check.x)];
+        return out && (isAllOk || !isGhegenuber(radCheck,startNoZone,endNoZone));
+    }
+
+    /**
+     * metodo per il controllo dei radianti, ritorna true se il valore in radianti radCheck é compreso tra start e end,
+     * controlla che non sia compresa invece tra i radianti ma "un giro dopo", in radianti
+     * @param radCheck radiante da controllare
+     * @param startZone inizio della zona da controllare
+     * @param endZone fine della zona da controllare
+     * @return se l`angolo inserito è compreso tra gli altri due
+     */
     private boolean isGhegenuber(double radCheck,double startZone,double endZone){
-        boolean isUpStart=radCheck>startZone,isUpEnd=radCheck>endZone;
-        if(isUpEnd==isUpStart){
-            isUpStart=radCheck>startZone+rad360;
-            isUpEnd=radCheck>endZone+rad360;
-            return isUpEnd!=isUpStart;
-        }else
-            return true;
+        //se è minore di tutti e due faccoi il controllo "un giro dopo"
+        if(radCheck<startZone && radCheck < endZone)
+            radCheck+=rad360;
+        return radCheck > startZone && radCheck < endZone;
     }
 }

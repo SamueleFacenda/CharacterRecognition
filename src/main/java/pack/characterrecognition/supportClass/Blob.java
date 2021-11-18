@@ -26,25 +26,25 @@ public class Blob {
     public int getUpper(){
         int max=0;
         for(Coor c:lista)
-            if(c.y>max) max=(int)Math.ceil(c.y);
+            if(c.y>max) max=DoubleUtils.toInt(Math.ceil(c.y));
          return max;
     }
     public int getDowner(){
-        int min=(int)lista.get(0).y;
+        int min=DoubleUtils.toInt(lista.get(0).y);
         for(Coor c:lista)
-            if(c.y<min) min=(int)c.y;
+            if(c.y<min) min=DoubleUtils.toInt(c.y);
         return min;
     }
     public int getRigther(){
         int max=0;
         for(Coor c:lista)
-            if(c.x>max) max=(int)Math.ceil(c.x);
+            if(c.x>max) max=DoubleUtils.toInt(Math.ceil(c.x));
         return max;
     }
     public int getLefter(){
-        int min=(int)lista.get(0).x;
+        int min=DoubleUtils.toInt(lista.get(0).x);
         for(Coor c:lista)
-            if(c.x<min) min=(int)c.x;
+            if(c.x<min) min=DoubleUtils.toInt(c.x);
         return min;
     }
     public int getHeight(){
@@ -94,7 +94,7 @@ public class Blob {
         boolean[][] grid=new boolean[getUpper()-down+1][getRigther()-left+1];
         for (Coor c:
              lista) {
-            grid[(int) (c.y-down)][(int) (c.x-left)]=true;
+            grid[DoubleUtils.toInt(c.y-down)][DoubleUtils.toInt(c.x-left)]=true;
         }
         String out="Blob:\n";
         for (boolean[] row:
@@ -111,7 +111,7 @@ public class Blob {
         boolean[][] out=new boolean[getUpper()+1][getRigther()+1];
         for (Coor c:
              lista)
-            out[(int)Math.round(c.y)][(int)Math.round(c.x)]=true;
+            out[DoubleUtils.toInt(Math.round(c.y))][DoubleUtils.toInt(Math.round(c.x))]=true;
         return out;
     }
 }

@@ -225,6 +225,12 @@ public class Arch extends Segment {
         calcRad();
     }
     @Override
+    public void scale(double fract){
+        s.scale(fract);
+        e.scale(fract);
+        p.scale(fract);
+    }
+    @Override
     public String toString(){
         return "Arco: \n"+"start: "+s+"\nend: "+e+"\n3rd point: "+p;
     }

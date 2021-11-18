@@ -132,6 +132,10 @@ public class VectorialImage {
         for(Coor c:niuV.getCoorsX()) pi.setColor((int)(c.x<0?0:c.x),(int)(c.y<0?0:c.y), Color.BLACK);
         for(Coor c:niuV.getCoorsY()) pi.setColor((int)(c.x<0?0:c.x),(int)(c.y<0?0:c.y),Color.BLACK);
     }
+    public void scale(double frac){
+        for(Arch in:archList) in.scale(frac);
+        for(Segment in: segmentList) in.scale(frac);
+    }
 
     @Override
     public boolean equals(Object o) {

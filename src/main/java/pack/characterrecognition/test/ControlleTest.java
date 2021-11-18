@@ -21,6 +21,8 @@ public class ControlleTest {
         Blob b=new BlobGenerator(in).getBigger();
         b=Blob.removeMargin(b);
         VectorialImage vi=new VectorialImageGenerator(b);
+        System.out.println(vi);
+        vi.scale(10);
         gruppo.getChildren().add(new ImageView(vi.toImage()));
     }
 }

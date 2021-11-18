@@ -71,4 +71,7 @@ public class BlobSegment extends Segment {
         out.lista.addAll(lista);
         return out;
     }
+    public Segment toSegment(){
+        return new Segment(s,e);
+    }
 }

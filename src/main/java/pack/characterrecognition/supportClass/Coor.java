@@ -68,7 +68,7 @@ public class Coor{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Coor coor = (Coor) o;
-        return DoubleCompare.areEquals(coor.x, x) && DoubleCompare.areEquals(coor.y, y);
+        return DoubleUtils.areEquals(coor.x, x) && DoubleUtils.areEquals(coor.y, y);
     }
 
     @Override
@@ -109,5 +109,9 @@ public class Coor{
             return Math.acos((s.x-e.x)/getDist(s,e));
         else
             return Math.PI*2-Math.acos((s.x-e.x)/getDist(s,e));
+    }
+    public void scale(double fract){
+        x=x*fract;
+        y=y*fract;
     }
 }

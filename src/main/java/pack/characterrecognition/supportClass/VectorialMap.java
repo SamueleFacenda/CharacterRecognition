@@ -193,6 +193,9 @@ public class VectorialMap extends VectorialImage{
         for (GraphPoint gp: points)
             System.out.println(gp);
     }
+    public void scalePerHeight(double in){
+        scale(in/getHeight());
+    }
     static public double calcSimil(VectorialMap uno,VectorialMap due){
         /*uno.scale(100.0/uno.getHeight());
         due.scale(100.0/due.getHeight());
