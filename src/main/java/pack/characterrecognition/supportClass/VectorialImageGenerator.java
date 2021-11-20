@@ -23,6 +23,7 @@ public class VectorialImageGenerator extends VectorialImage{
     */
     private final double rad360,deltaRad,diagonalHop,archRadCoefficent;
     private boolean[][] grid;
+    private LinkedList<Segment> toRemove;
     public VectorialImageGenerator(Blob in){
         segmentList=new LinkedList<>();
         deltaRad=Math.atan(1.51/2.5);
@@ -34,30 +35,66 @@ public class VectorialImageGenerator extends VectorialImage{
         while(!grid[(i/ grid[0].length)][i%grid[0].length]) i++;
         Coor start=new Coor((i/ grid[0].length),i%grid[0].length);
         generateBlobSegmentAtStart(start);
+        toRemove=new LinkedList<>();
         generateArchs();
+        for (Segment currentRemove:
+             toRemove) {
+            if(!segmentList.remove(currentRemove)){
+                Iterator<Segment> checkSimilar=segmentList.iterator();
+                Segment current;
+                while(checkSimilar.hasNext()){
+                    current=checkSimilar.next();
+                    if(Segment.areSimilar(current,currentRemove,0.05*grid.length))
+                        segmentList.remove(current);
+                }
+            }
+        }
     }
     private void generateArchs(){
         
     }
+
+    /**
+     * metodo ricorsivo che ritorna una lista di segmenti ad arco da una cella in una certa direzione.
+     * Cerca tutti i segmenti nella direzione dell'arco, poi richiama sé stesso dalla fine di quei segmenti,
+     * ritorna la lista più lunga con l'aggiunta del segmento da  cui ha generato la nuova lista.
+     * Se la lista non è abbastanza lunga la genera come arco a parte.
+     * @param start cella da cui cercare segmenti
+     * @param radDirection angolo in radianti dell'arco
+     * @param orarSense se il segmento deve essere in senso antiorario o orario(radainti maggoiri o minori)
+     * @return lista di segmenti ad arco a partire dalla cella
+     */
     private LinkedList<Segment> findCurveSegment(Coor start, double radDirection, boolean orarSense){
+        //currentList è un buffer per le liste generate da ogni segmento
         LinkedList<Segment> out=null,currentList = null;
+        //se il segmento è simile ma al contrario
         boolean isStorto;
+        //controlla per ogni segmento
         for (Segment current:
              segmentList) {
             isStorto=Coor.areNear(start,current.e,0.05*grid.length);
+            //se è simile ma storto o se è simile
             if(isStorto || Coor.areNear(start,current.s,0.05*grid.length)){
+                //se è storto lo gira
                 if(isStorto)
                     current=new Segment(current.e,current.s);
-                if(checkSegmentForContigousCurve(current,radDirection,orarSense)){
-                    currentList=findCurveSegment(current.e,current.getRad(),orarSense);
-                    if(currentList!=null && (out==null || currentList.size() > out.size())){
+                //controlla che sia adatto a far parte dell'arco
+                if(checkSegmentForContigousCurve(current,radDirection,orarSense)) {
+                    //genera la nuova linkedlist a partire dalla fine del segmento
+                    currentList = findCurveSegment(current.e, current.getRad(), orarSense);
+                    //se la lista generata è più lunga di quella attualmente più lunga(o se questa è ancora vuota), la imposta
+                    if(currentList!=null && (out==null || currentList.size() > out.size()-1)){//il -1 serve perchè currentList non contiene il segmento da cui ha iniziato a generare
                         out=currentList;
                         currentList.addFirst(current);
+                    //se quella appena generata è null: se anche l'altra è null la setta come lista con solo il segmento corrente, se no controlla che sia lunga solo uno
+                    //e che il segmento corrente sia più lungo di quello contenuto nella lista out
                     }else if(currentList == null && (out==null || (out.size()==1 && out.getFirst().getLen()<current.getLen()))){
                         currentList=new LinkedList<>();
                         currentList.addFirst(current);
                         out=currentList;
-                    }else if(currentList != null && out!=currentList){
+                    }
+                    //controllo se currentList è stata scartata perché è troppo corta, se è così non la elimina ma la genera come arco a parte
+                    if(currentList != null && out!=currentList){
                         currentList.addFirst(current);
                         creatArch(currentList);
                     }
@@ -66,17 +103,38 @@ public class VectorialImageGenerator extends VectorialImage{
         }
         return out;
     }
-    public void creatArch(LinkedList<Segment> lista){
+
+    /**
+     * metodo che da lista di segmenti genera un arco, quindi se è lungo abbastanza sostituisce tutti
+     * i segmenti con un solo arco, li rimuove dalla segmentList(li aggiunge alla lista di segmenti da rimuovere
+     * , cosicché possano essere ancora usati durante la generazione di nuovi archi.
+     * @param lista
+     */
+    private void creatArch(LinkedList<Segment> lista){
 
     }
+
+    /**
+     * metodo per il controllo della contiguità angolare di un semgento con una direzone, in un senso
+     * @param check segmento da controllare
+     * @param radDirection direzoine di partenza
+     * @param isOrarSense senso(sinista o destra) del controllo
+     * @return
+     */
     private boolean checkSegmentForContigousCurve(Segment check, double radDirection,boolean isOrarSense){
         double radCheck= check.getRad();
         if(isOrarSense){
+            /*
+            se il senso è antiorario perchè possa essere ammissibile l'angolo del segmento deve sempre essere minore dell'angolo
+            di controllo, quindi se questo è lo giro di 360° in senso orario(-2PI), poi calcolo la differenza(raDirection adesso è
+            sempre maggiore), poi ritorna se la differenza è minore del coefficiente che detenrmina l'angolo ammissibile
+             */
             if(radCheck>radDirection)
                 radCheck-=rad360;
             radCheck=radDirection-radCheck;
             return radCheck<archRadCoefficent;
         }else{
+            //l'opposto del senso orario
             if(radCheck<radDirection)
                 radCheck+=rad360;
             radCheck-=radDirection;
