@@ -1,8 +1,5 @@
 package pack.characterrecognition.supportClass;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.PixelReader;
-
 import java.util.LinkedList;
 
 /**
@@ -10,40 +7,40 @@ import java.util.LinkedList;
  * @author Samuele Facenda
  */
 public class Blob {
-    protected LinkedList<Coor> lista;
+    protected LinkedList<CoorD> lista;
     public Blob(){
         lista=new LinkedList<>();
     }
-    public void add(Coor in){
+    public void add(CoorD in){
         lista.add(in.getCopy());
     }
     public int size(){
         return lista.size();
     }
-    public boolean contains(Coor in){
+    public boolean contains(CoorD in){
         return lista.contains(in);
     }
     public int getUpper(){
         int max=0;
-        for(Coor c:lista)
+        for(CoorD c:lista)
             if(c.y>max) max=DoubleUtils.toInt(Math.ceil(c.y));
          return max;
     }
     public int getDowner(){
         int min=DoubleUtils.toInt(lista.get(0).y);
-        for(Coor c:lista)
+        for(CoorD c:lista)
             if(c.y<min) min=DoubleUtils.toInt(c.y);
         return min;
     }
     public int getRigther(){
         int max=0;
-        for(Coor c:lista)
+        for(CoorD c:lista)
             if(c.x>max) max=DoubleUtils.toInt(Math.ceil(c.x));
         return max;
     }
     public int getLefter(){
         int min=DoubleUtils.toInt(lista.get(0).x);
-        for(Coor c:lista)
+        for(CoorD c:lista)
             if(c.x<min) min=DoubleUtils.toInt(c.x);
         return min;
     }
@@ -53,8 +50,8 @@ public class Blob {
     public int getWidth(){
         return getRigther()-getLefter();
     }
-    public boolean containsSimilar(Coor in){
-        for(Coor c:lista){
+    public boolean containsSimilar(CoorD in){
+        for(CoorD c:lista){
             if((int)in.x==(int)Math.round(c.x)&&(int)in.y==(int)Math.round(c.y))
                 return true;
         }
@@ -75,7 +72,7 @@ public class Blob {
     public static Blob removeMargin(Blob in){
         in=in.getCopy();
         int minX= in.getLefter(),minY= in.getDowner();
-        for (Coor current:
+        for (CoorD current:
              in.lista) {
             current.x-=minX;
             current.y-=minY;
@@ -84,7 +81,7 @@ public class Blob {
     }
     public Blob getCopy(){
         Blob out=new Blob();
-        for (Coor current:
+        for (CoorD current:
                 lista) out.add(current);
         return out;
     }
@@ -92,7 +89,7 @@ public class Blob {
     public String toString(){
         int left=getLefter(),down=getDowner();
         boolean[][] grid=new boolean[getUpper()-down+1][getRigther()-left+1];
-        for (Coor c:
+        for (CoorD c:
              lista) {
             grid[DoubleUtils.toInt(c.y-down)][DoubleUtils.toInt(c.x-left)]=true;
         }
@@ -109,7 +106,7 @@ public class Blob {
     }
     public boolean[][] toBooleanGrid(){
         boolean[][] out=new boolean[getUpper()+1][getRigther()+1];
-        for (Coor c:
+        for (CoorD c:
              lista)
             out[DoubleUtils.toInt(Math.round(c.y))][DoubleUtils.toInt(Math.round(c.x))]=true;
         return out;

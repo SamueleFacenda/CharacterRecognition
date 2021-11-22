@@ -7,9 +7,9 @@ import java.util.LinkedList;
  * dai segmenti che partono e arrivano al punto
  * @author Samuele Facenda
  */
-public class GraphPoint extends Coor{
+public class GraphPoint extends CoorD {
     private LinkedList<Segment> start,end;
-    public GraphPoint(Coor in) {
+    public GraphPoint(CoorD in) {
         super(in.x, in.y);
         start=new LinkedList<>();
         end=new LinkedList<>();
@@ -29,9 +29,9 @@ public class GraphPoint extends Coor{
 
     /**
      * sposta il punto e tutti i vertici dei segmenti che arrivano al punto alla coordinata inserita
-     * @param in punto sucui spostare questo incrocio
+     * @param in punto su cui spostare questo incrocio
      */
-    public void move(Coor in){
+    public void move(CoorD in){
         for (Segment v:
                 start)
             v.setS(in);

@@ -15,6 +15,26 @@ public class ControlleTest {
     @FXML
     private Group gruppo;
     public void initialize() throws IOException, InterruptedException {
+        Blob b=new Blob();
+        b.add(new CoorD(0,0));
+        b.add(new CoorD(0,2));
+        b.add(new CoorD(2,3));
+        b.add(new CoorD(3,5));
+        b.add(new CoorD(4,7));
+        b.add(new CoorD(4,9));
+        b.add(new CoorD(5,5));
+        b.add(new CoorD(6,10));
+        b.add(new CoorD(7,6));
+        b.add(new CoorD(8,4));
+        b.add(new CoorD(9,2));
+        b.add(new CoorD(10,0));
+
+        VectorialImageGenerator v=new VectorialImageGenerator(b);
+        //v.scale(10);
+        VectorialMap vi=new VectorialMap(v);
+        vi.scale(10);
+        vi.enchant();
+        gruppo.getChildren().add(new ImageView(vi.toImage()));
     }
     public void addImg(Image in){
         //gruppo.getChildren().add(new ImageView(in));

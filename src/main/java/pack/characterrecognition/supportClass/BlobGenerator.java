@@ -29,7 +29,7 @@ public class BlobGenerator {
                 //se non è stata aggiunta è è nera genero un nuovo blob a partire da quella cella
                 if(!added[row][col]&&!pix.getColor(col,row).equals(Color.WHITE)){
                     Blob ad=new Blob();
-                    ad.add(new Coor(col,row));
+                    ad.add(new CoorD(col,row));
                     added[row][col]=true;
                     lista.add(ad);
                     addAround(ad,col,row);
@@ -79,7 +79,7 @@ public class BlobGenerator {
     }
     private void checkCell(Blob in,int x,int y){
         if(!added[y][x]&&!pix.getColor(x,y).equals(Color.WHITE)){
-            in.add(new Coor(x,y));
+            in.add(new CoorD(x,y));
             added[y][x]=true;
             addAround(in,x,y);
         }

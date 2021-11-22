@@ -79,7 +79,7 @@ public class VectorialImage {
                     minY=v.e.y;
             }
         }
-        Coor further;
+        CoorD further;
         for(Arch v:archList){
             if(v.s.x>maxX)
                 maxX=v.s.x;
@@ -129,8 +129,8 @@ public class VectorialImage {
     private void copyCoors(double minY, double minX, PixelWriter pi, Segment in) {
         Segment niuV;
         niuV=in.moveDownLeft(minX,minY);
-        for(Coor c:niuV.getCoorsX()) pi.setColor((int)(c.x<0?0:c.x),(int)(c.y<0?0:c.y), Color.BLACK);
-        for(Coor c:niuV.getCoorsY()) pi.setColor((int)(c.x<0?0:c.x),(int)(c.y<0?0:c.y),Color.BLACK);
+        for(CoorD c:niuV.getCoorsX()) pi.setColor((int)(c.x<0?0:c.x),(int)(c.y<0?0:c.y), Color.BLACK);
+        for(CoorD c:niuV.getCoorsY()) pi.setColor((int)(c.x<0?0:c.x),(int)(c.y<0?0:c.y),Color.BLACK);
     }
     public void scale(double frac){
         for(Arch in:archList) in.scale(frac);

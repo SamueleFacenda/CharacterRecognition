@@ -29,7 +29,7 @@ public class VectorialMap extends VectorialImage{
             if(v.e.y>height)
                 height=v.e.y;
         }
-        Coor further;
+        CoorD further;
         for (Arch v:
                 archList) {
             if(v.s.x>width)
@@ -46,8 +46,7 @@ public class VectorialMap extends VectorialImage{
             if(further.y>height)
                 height=further.y;
         }
-        points.clone();
-        double smallCoefficent=height/7,angleCoefficent=Math.PI*0.25;
+        double smallCoefficent=7,angleCoefficent=Math.PI*0.25;
         for (Segment v:
                 segmentList)
             checkFormForPoints(v,smallCoefficent);
@@ -65,14 +64,14 @@ public class VectorialMap extends VectorialImage{
         boolean notSFind=true,notEFind=true;
         while(i.hasNext()&&(notSFind||notEFind)){
             gp=i.next();
-            if(notSFind&&Coor.areNear(in.s,gp,smallCoefficent)){
+            if(notSFind&& CoorD.areNear(in.s,gp,smallCoefficent)){
                 gp.addStart(in);
-                in.setS(gp.getCopy());
+                in.setS(gp);
                 notSFind=false;
             }
-            if(notEFind&&Coor.areNear(in.e,gp,smallCoefficent)){
-                gp.addStart(in);
-                in.setE(gp.getCopy());
+            if(notEFind&& CoorD.areNear(in.e,gp,smallCoefficent)){
+                gp.addEnd(in);
+                in.setE(gp);
                 notEFind=false;
             }
         }
@@ -189,9 +188,7 @@ public class VectorialMap extends VectorialImage{
     }
     public void scale(double fraction){
         for (GraphPoint gp: points)
-            gp.move(new Coor(gp.x*fraction,gp.y*fraction));
-        for (GraphPoint gp: points)
-            System.out.println(gp);
+            gp.move(new CoorD(gp.x*fraction,gp.y*fraction));
     }
     public void scalePerHeight(double in){
         scale(in/getHeight());
@@ -224,13 +221,11 @@ public class VectorialMap extends VectorialImage{
     }
     private static boolean haveSameBridges(LinkedList<GraphPoint> uno,LinkedList<GraphPoint> due){
         if(uno.size()== due.size()){
-            return confrontGrahpGrid(generateGrid(uno),generateGrid(due));
+            return equalsBooleanGrid(generateGrid(uno),generateGrid(due));
         }else
             return false;
     }
-    private static boolean confrontGrahpGrid(boolean[][] uno,boolean[][] due){
-        return false;
-    }
+
     private static int getBridge(boolean[] in){
         int i=0;
         for (boolean boo:
@@ -337,5 +332,13 @@ public class VectorialMap extends VectorialImage{
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), points);
+    }
+    private void removeSegment(Segment in){
+        segmentList.remove(in);
+        for (GraphPoint gp :
+                points) {
+            gp.getStart().remove(in);
+            gp.getEnd().remove(in);
+        }
     }
 }

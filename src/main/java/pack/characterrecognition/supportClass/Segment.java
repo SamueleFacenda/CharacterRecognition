@@ -10,7 +10,7 @@ public class Segment {
     /**
      * le coordinate dei vertici dei segmenti
      */
-    protected Coor s,e;//start e end
+    protected CoorD s,e;//start e end
 
     /**
      * costruttore con coordinate divise in x e y(solo int)
@@ -20,23 +20,23 @@ public class Segment {
      * @param yE
      */
     public Segment(int xS, int yS, int xE, int yE) {
-        s=new Coor(xS,yS);
-        e=new Coor(xE,yE);
+        s=new CoorD(xS,yS);
+        e=new CoorD(xE,yE);
     }
-    public Segment(Coor s, Coor e){
+    public Segment(CoorD s, CoorD e){
         this.s=s.getCopy();
         this.e=e.getCopy();
     }
-    public void setS(Coor s){
+    public void setS(CoorD s){
         this.s=s.getCopy();
     }
-    public void setE(Coor e){
+    public void setE(CoorD e){
         this.e=e.getCopy();
     }
-    public Coor getS(){
+    public CoorD getS(){
         return e.getCopy();
     }
-    public Coor getE(){
+    public CoorD getE(){
         return e.getCopy();
     }
     public void setXS(int x){
@@ -69,7 +69,7 @@ public class Segment {
      * @return lunghezza del segmento
      */
     public double getLen(){
-        return Coor.getDist(s,e);
+        return CoorD.getDist(s,e);
     }
 
     /**
@@ -77,7 +77,7 @@ public class Segment {
      * @param p punto da usare per il calcolo
      * @return la distanza del punto dal segmento
      */
-    public double getDistanza(Coor p){
+    public double getDistanza(CoorD p){
         return Math.abs(getPendenza()*p.x-p.y+getYAxis())/Math.sqrt(Math.pow(getPendenza(),2)+1);
     }
     public double getDistanza(int x,int y){
@@ -104,8 +104,8 @@ public class Segment {
      * calcolo del punto medio del segmento
      * @return punto medio del segmento
      */
-    public Coor getPMedio(){
-        return Coor.getPMedio(s,e);
+    public CoorD getPMedio(){
+        return CoorD.getPMedio(s,e);
     }
 
     /**
@@ -114,7 +114,7 @@ public class Segment {
      * @param due
      * @return
      */
-    public static double getPendenzaDuePunti(Coor uno,Coor due ){
+    public static double getPendenzaDuePunti(CoorD uno, CoorD due ){
         if(DoubleUtils.areEquals(uno.x,due.x))
             return Double.MAX_VALUE;
         else
@@ -126,7 +126,7 @@ public class Segment {
      * @param p punto da confrontare
      * @return se è sopra(y>)
      */
-    public boolean isUpper(Coor p){
+    public boolean isUpper(CoorD p){
         return getPendenza()*p.x-p.y+getYAxis()>0;
     }
 
@@ -135,20 +135,20 @@ public class Segment {
      * , controlla che non sia verticale o orizzontale
      * @return coordinate x del segmento
      */
-    public Coor[] getCoorsX(){
+    public CoorD[] getCoorsX(){
         double m=getPendenza(),q=getYAxis(),start=Double.min(s.x,e.x);
         if(DoubleUtils.areEquals(e.x,s.x))
-            return new Coor[]{s.getCopy(),e.getCopy()};
+            return new CoorD[]{s.getCopy(),e.getCopy()};
         else if(DoubleUtils.areEquals(e.y,s.y)){
-            Coor[] out = new Coor[(int) Math.abs(s.x - e.x)];
+            CoorD[] out = new CoorD[(int) Math.abs(s.x - e.x)];
             for (int i = (int) start; i < start + out.length; i++)
-                out[(int) (i - start)] = new Coor(i, s.y);
+                out[(int) (i - start)] = new CoorD(i, s.y);
             return out;
         }else{
-            Coor[] out = new Coor[(int) Math.abs(s.x - e.x)];
+            CoorD[] out = new CoorD[(int) Math.abs(s.x - e.x)];
             //applico l'equazoine della retta
             for (int i = (int) start; i < start + out.length; i++)
-                out[(int) (i - start)] = new Coor(i, Math.round(i * m + q));
+                out[(int) (i - start)] = new CoorD(i, Math.round(i * m + q));
             return out;
         }
     }
@@ -157,20 +157,20 @@ public class Segment {
      * , controlla che non sia orizzontale o verticale
      * @return coordinate y del segmento
      */
-    public Coor[] getCoorsY(){
+    public CoorD[] getCoorsY(){
         double m=getPendenza(),q=getYAxis(),start=Double.min(s.y,e.y);
         if(DoubleUtils.areEquals(e.y,s.y))
-            return new Coor[]{s.getCopy(),e.getCopy()};
+            return new CoorD[]{s.getCopy(),e.getCopy()};
         else if(DoubleUtils.areEquals(e.x,s.x)){
-            Coor[] out = new Coor[(int) Math.abs(s.y - e.y)];
+            CoorD[] out = new CoorD[(int) Math.abs(s.y - e.y)];
             for (int i = (int) start; i < start + out.length; i++)
-                out[(int) (i - start)] = new Coor(s.x,i);
+                out[(int) (i - start)] = new CoorD(s.x,i);
             return out;
         }else{
-            Coor[] out = new Coor[(int) Math.abs(s.y - e.y)];
+            CoorD[] out = new CoorD[(int) Math.abs(s.y - e.y)];
             //applico l'equazoine della retta inversa
             for (int i = (int) start; i < start + out.length; i++)
-                out[(int) (i - start)] = new Coor(Math.round((i - q) / m), i);
+                out[(int) (i - start)] = new CoorD(Math.round((i - q) / m), i);
             return out;
         }
     }
@@ -182,7 +182,7 @@ public class Segment {
      * @return segmento spostato
      */
     public Segment moveDownLeft(double deltaX, double deltaY){
-        return new Segment(new Coor(s.x-deltaX,s.y-deltaY),new Coor(e.x-deltaX,e.y-deltaY));
+        return new Segment(new CoorD(s.x-deltaX,s.y-deltaY),new CoorD(e.x-deltaX,e.y-deltaY));
     }
     public Segment(){}
     public Segment getCopy(){
@@ -200,7 +200,7 @@ public class Segment {
      */
     public static boolean areSemiContigous(Segment uno, Segment due, double radMax){
         //cerco il vertice in comune e quelli non
-        Coor center,p1,p2;
+        CoorD center,p1,p2;
         if(uno.s.equals(due.s)){
             center=uno.s;
             p1=uno.e;
@@ -219,7 +219,7 @@ public class Segment {
             p2=due.e;
         }
         //calcolo del'angolo in radianti dei segmenti
-        double radP1=Math.acos((center.x-p1.x)/Coor.getDist(center,p1)),radP2=Math.acos((center.x-p2.x)/Coor.getDist(center,p2));
+        double radP1=Math.acos((center.x-p1.x)/ CoorD.getDist(center,p1)),radP2=Math.acos((center.x-p2.x)/ CoorD.getDist(center,p2));
         if(p1.y< center.y)
             radP1=Math.PI*2-radP1;
         if(p2.y<center.y)
@@ -233,16 +233,16 @@ public class Segment {
      * @param in punto da calcolare
      * @return proezione del punto sulla retta
      */
-    public Coor getNearestPointOnThis(Coor in){
+    public CoorD getNearestPointOnThis(CoorD in){
         if(DoubleUtils.areEquals(e.y,s.y))
-            return new Coor(in.x,s.y);
+            return new CoorD(in.x,s.y);
         else if(DoubleUtils.areEquals(e.x,s.x)){
-            return new Coor(s.x,in.y);
+            return new CoorD(s.x,in.y);
         }else{
             double pendenza=getPendenza(),pendenzaStorta=pendenza==0?Double.MAX_VALUE:-1.0/pendenza;
             double yPointStorto=in.y-(pendenzaStorta*in.x),yPoint=getYAxis();
             double x=(yPointStorto-yPoint)/(pendenza-pendenzaStorta);
-            return new Coor(x,pendenza*x+yPoint);
+            return new CoorD(x,pendenza*x+yPoint);
         }
     }
     public void scale(double fract){
@@ -266,12 +266,12 @@ public class Segment {
         return "Segmento: \n"+"start: "+s+"\nend: "+e;
     }
     public static boolean areSimilar(Segment uno,Segment due,double minValue){
-        if(Coor.areNear(uno.s,due.s,minValue))
-            return Coor.areNear(uno.e,due.e,minValue);
+        if(CoorD.areNear(uno.s,due.s,minValue))
+            return CoorD.areNear(uno.e,due.e,minValue);
         else
-            return Coor.areNear(uno.e,due.s,minValue)&&Coor.areNear(uno.s,due.e,minValue);
+            return CoorD.areNear(uno.e,due.s,minValue)&& CoorD.areNear(uno.s,due.e,minValue);
     }
     public double getRad(){
-        return Coor.calcRad(s,e);
+        return CoorD.calcRad(s,e);
     }
 }

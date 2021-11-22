@@ -8,14 +8,14 @@ import java.util.Objects;
  * @author Samuele Facenda
  */
 public class Arch extends Segment {
-    protected Coor p;//terzo punto dell'arco oltre all'inizio e alla fine
+    protected CoorD p;//terzo punto dell'arco oltre all'inizio e alla fine
     /**
      * dynamic programming variabile
      */
     private double radE,radS;
     public Arch(int xS, int yS, int xE, int yE,int pX,int pY) {
         super(xS, yS, xE, yE);
-        p=new Coor(pX,pY);
+        p=new CoorD(pX,pY);
         calcRad();
     }
 
@@ -26,10 +26,10 @@ public class Arch extends Segment {
      * @param e
      * @param p
      */
-    public Arch(Coor s,Coor e,Coor p){
+    public Arch(CoorD s, CoorD e, CoorD p){
         super(s,e);
         this.p=p.getCopy();
-        Coor center=getCenter();
+        CoorD center=getCenter();
         double raggio=getRadius(),sDeltaX= s.x-center.x,radS= s.y> center.y?Math.acos(sDeltaX/raggio):Math.PI*2-Math.acos(sDeltaX/raggio);
         double eDeltaX= e.x-center.x,radE= e.y> center.y?Math.acos(eDeltaX/raggio):Math.PI*2-Math.acos(eDeltaX/raggio);
         double pDeltaX= p.x-center.x,radP= p.y> center.y?Math.acos(pDeltaX/raggio):Math.PI*2-Math.acos(pDeltaX/raggio);
@@ -46,7 +46,7 @@ public class Arch extends Segment {
                 radS+=2.0*Math.PI;
         }
         if(radE<radS){
-            Coor swap=s;
+            CoorD swap=s;
             this.s=e.getCopy();
             this.e=swap.getCopy();
             this.radE=radS;
@@ -67,12 +67,12 @@ public class Arch extends Segment {
      * calcolo del centro dell'arco, intersezione degli assi dei segmenti che collegano i vertici al terzo punto
      * @return centro
      */
-    public Coor getCenter(){
-        Coor m1=Coor.getPMedio(s,p),m2=Coor.getPMedio(p,e);
+    public CoorD getCenter(){
+        CoorD m1= CoorD.getPMedio(s,p),m2= CoorD.getPMedio(p,e);
         double p1=-1.0/ Segment.getPendenzaDuePunti(s,p),p2=-1.0/ Segment.getPendenzaDuePunti(p,e);
         double yA1=m1.y-(p1*m1.x),yA2= m2.y-(p2*m2.x);
         double x=(yA2-yA1)/(p1-p2);
-        return new Coor(x,p1*x+yA1);
+        return new CoorD(x,p1*x+yA1);
     }
 
     /**
@@ -80,15 +80,15 @@ public class Arch extends Segment {
      * @return
      */
     public double getRadius(){
-        return Coor.getDist(s,getCenter());
+        return CoorD.getDist(s,getCenter());
     }
 
     /**
      * calcolo del punto dell'arco più lontano dalla retta che attraversa il segmento
      * @return
      */
-    public Coor getFurtherPoint(){
-        Coor center=getCenter();
+    public CoorD getFurtherPoint(){
+        CoorD center=getCenter();
         double raggio=getRadius(),medRadFrat=(radS+radE)/2.0/Math.PI,outX,outY;
         //calcolo radianti a metà tra l'inizio e la fine
         if((medRadFrat>0&&medRadFrat<1)||(medRadFrat>2&&medRadFrat<3)||(medRadFrat>-4&&medRadFrat<-2))
@@ -99,42 +99,42 @@ public class Arch extends Segment {
             outX= center.x-raggio*Math.cos((radS+radE)/2.0);
         else
             outX= center.x+raggio*Math.cos((radS+radE)/2.0);
-        return new Coor(outX,outY);
+        return new CoorD(outX,outY);
     }
     public double getWidth(){
         return getDistanza(getFurtherPoint());
     }
     public Arch moveDown(double n){
-        return new Arch(new Coor(s.x,s.y-n),new Coor(e.x,e.y-n),new Coor(p.x,p.y-n));
+        return new Arch(new CoorD(s.x,s.y-n),new CoorD(e.x,e.y-n),new CoorD(p.x,p.y-n));
     }
     public Arch moveUp(double n){
-        return new Arch(new Coor(s.x,s.y+n),new Coor(e.x,e.y+n),new Coor(p.x,p.y+n));
+        return new Arch(new CoorD(s.x,s.y+n),new CoorD(e.x,e.y+n),new CoorD(p.x,p.y+n));
     }
     public Arch moveLeft(double n){
-        return new Arch(new Coor(s.x-n,s.y),new Coor(e.x-n,e.y),new Coor(p.x-n,p.y));
+        return new Arch(new CoorD(s.x-n,s.y),new CoorD(e.x-n,e.y),new CoorD(p.x-n,p.y));
     }
     public Arch moveRight(double n){
-        return new Arch(new Coor(s.x+n,s.y),new Coor(e.x+n,e.y),new Coor(p.x+n,p.y));
+        return new Arch(new CoorD(s.x+n,s.y),new CoorD(e.x+n,e.y),new CoorD(p.x+n,p.y));
     }
     @Override
-    public Coor[] getCoorsX(){
-        LinkedList<Coor> lista=new LinkedList<>();
-        Coor center=getCenter();
+    public CoorD[] getCoorsX(){
+        LinkedList<CoorD> lista=new LinkedList<>();
+        CoorD center=getCenter();
         double raggio=getRadius(),start= center.x-raggio, deltaY,radSu;
         for(int i=(int)start;i<start+raggio*2;i++){
             deltaY=Math.sqrt(Math.pow(raggio,2)-Math.pow(i-center.x,2));
             radSu=Math.asin(deltaY/raggio);
             if(i<start+raggio)
                 radSu=Math.PI-radSu;
-            if(isRadInThisPossible(radSu))lista.add(new Coor(i,Math.round(deltaY+center.y)));
-            if(isRadInThisPossible(-radSu))lista.add(new Coor(i,Math.round(center.y-deltaY)));
+            if(isRadInThisPossible(radSu))lista.add(new CoorD(i,Math.round(deltaY+center.y)));
+            if(isRadInThisPossible(-radSu))lista.add(new CoorD(i,Math.round(center.y-deltaY)));
         }
-        return lista.toArray(new Coor[0]);
+        return lista.toArray(new CoorD[0]);
     }
     @Override
-    public Coor[] getCoorsY(){
-        LinkedList<Coor> lista=new LinkedList<>();
-        Coor center=getCenter();
+    public CoorD[] getCoorsY(){
+        LinkedList<CoorD> lista=new LinkedList<>();
+        CoorD center=getCenter();
         double raggio=getRadius(),start= center.y-raggio, deltaX,radLato,radLato2;
         for(int i=(int)start;i<start+raggio*2;i++){
             deltaX=Math.sqrt(Math.pow(raggio,2)-Math.pow(i-center.y,2));
@@ -144,17 +144,17 @@ public class Arch extends Segment {
                 radLato2=Math.PI*1.5-radLato;
             }else
                 radLato2=Math.PI-radLato;
-            if(isRadInThisPossible(radLato))lista.add(new Coor(Math.round(deltaX+center.x),i));
-            if(isRadInThisPossible(radLato2))lista.add(new Coor(Math.round(center.x-deltaX),i));
+            if(isRadInThisPossible(radLato))lista.add(new CoorD(Math.round(deltaX+center.x),i));
+            if(isRadInThisPossible(radLato2))lista.add(new CoorD(Math.round(center.x-deltaX),i));
         }
-        return lista.toArray(new Coor[0]);
+        return lista.toArray(new CoorD[0]);
     }
     private boolean isRadInThisPossible(double radSu){
         return (radS-Math.PI*2<=radSu&&radSu<=radE-Math.PI*2)||(radS<=radSu&&radSu<=radE)|(radS+Math.PI*2<=radSu&&radSu<=radE+Math.PI*2);
     }
     @Override
     public Arch moveDownLeft(double deltaX,double deltaY){
-        return new Arch(new Coor(s.x-deltaX,s.y-deltaY),new Coor(e.x-deltaX,e.y-deltaY),new Coor(p.x-deltaX,p.y-deltaY));
+        return new Arch(new CoorD(s.x-deltaX,s.y-deltaY),new CoorD(e.x-deltaX,e.y-deltaY),new CoorD(p.x-deltaX,p.y-deltaY));
     }
 
     @Override
@@ -186,7 +186,7 @@ public class Arch extends Segment {
      * ricalcolo dei radianti dei punti comenel costruttore principale, usato se modifico i vertici
      */
     private void calcRad(){
-        Coor center=getCenter();
+        CoorD center=getCenter();
         double raggio=getRadius(),sDeltaX= s.x-center.x,radS= s.y> center.y?Math.acos(sDeltaX/raggio):Math.PI*2-Math.acos(sDeltaX/raggio);
         double eDeltaX= e.x-center.x,radE= e.y> center.y?Math.acos(eDeltaX/raggio):Math.PI*2-Math.acos(eDeltaX/raggio);
         double pDeltaX= p.x-center.x,radP= p.y> center.y?Math.acos(pDeltaX/raggio):Math.PI*2-Math.acos(pDeltaX/raggio);
@@ -202,7 +202,7 @@ public class Arch extends Segment {
                 radS+=2.0*Math.PI;
         }
         if(radE<radS){
-            Coor swap=s;
+            CoorD swap=s;
             this.s=e.getCopy();
             this.e=swap.getCopy();
             this.radE=radS;
@@ -215,12 +215,12 @@ public class Arch extends Segment {
         }
     }
     @Override
-    public void setS(Coor in){
+    public void setS(CoorD in){
         s=in.getCopy();
         calcRad();
     }
     @Override
-    public void setE(Coor in){
+    public void setE(CoorD in){
         e=in.getCopy();
         calcRad();
     }
@@ -234,7 +234,7 @@ public class Arch extends Segment {
     public String toString(){
         return "Arco: \n"+"start: "+s+"\nend: "+e+"\n3rd point: "+p;
     }
-    public void setP(Coor in){
+    public void setP(CoorD in){
         p=in.getCopy();
         calcRad();
     }

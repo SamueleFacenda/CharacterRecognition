@@ -1,20 +1,48 @@
 package pack.characterrecognition.supportClass;
 
+import java.util.Objects;
 
 /**
  * classe che indica le coordinate di un punto 2d
- * , con alcuni metodi di utilità
+ * , con alcuni metodi di utilità,
+ * double
  * @author Samuele Facenda
  */
-interface Coor {
+public class CoorD implements Coor{
+    /**
+     * la posizione sull'asse x o y del punto
+     */
+    protected double x,y;
 
-    public double getX();
+    /**
+     * costruttore semplice
+     * @param x posizione sull'asse x
+     * @param y posizione sull'asse y
+     */
+    public CoorD(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+    public CoorD(CoorI in){
+        x=in.x;
+        y=in.y;
+    }
 
-    public double getY() ;
+    public double getX() {
+        return x;
+    }
 
-    public void setX(double x);
+    public double getY() {
+        return y;
+    }
 
-    public void setY(double y);
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
 
     /**
      * calcolo della distanza di due punti
@@ -36,15 +64,26 @@ interface Coor {
     public static CoorD getPMedio(CoorD uno, CoorD due){
         return new CoorD((uno.x+due.x)/2,(uno.y+due.y)/2);
     }
-    public CoorD getCopy();
+    public CoorD getCopy(){
+        return new CoorD(x,y);
+    }
 
     @Override
-    public boolean equals(Object o) ;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CoorD coor = (CoorD) o;
+        return DoubleUtils.areEquals(coor.x, x) && DoubleUtils.areEquals(coor.y, y);
+    }
 
     @Override
-    public int hashCode();
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
     @Override
-    public String toString();
+    public String toString(){
+        return "x: "+x+",y: "+y;
+    }
 
     /**
      * restituisce true se la coordinata inserita è compresa in un
@@ -53,7 +92,9 @@ interface Coor {
      * @param radius distanza massima per dire che sono simili
      * @return se sono simili in base al raggio inserito
      */
-    public boolean areSimilar(CoorD in, double radius);
+    public boolean areSimilar(CoorD in, double radius){
+        return getDist(this,in)<=radius;
+    }
 
     /**
      * metodo statico che controlla se la distanza di due punti è minore di quella
@@ -74,5 +115,8 @@ interface Coor {
         else
             return Math.PI*2-Math.acos((s.x-e.x)/getDist(s,e));
     }
-    public void scale(double fract);
+    public void scale(double fract){
+        x=x*fract;
+        y=y*fract;
+    }
 }

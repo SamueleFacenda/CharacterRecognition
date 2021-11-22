@@ -3,21 +3,21 @@ package pack.characterrecognition.supportClass;
 import java.util.LinkedList;
 
 public class BlobSegment extends Segment {
-    protected LinkedList<Coor> lista=new LinkedList<>();
+    protected LinkedList<CoorD> lista=new LinkedList<>();
 
-    public BlobSegment(Coor st){
+    public BlobSegment(CoorD st){
         super(st,st);
         lista.add(st.getCopy());
     }
 
-    public BlobSegment(Coor s, Coor e) {
+    public BlobSegment(CoorD s, CoorD e) {
         super(s,e);
         lista.add(s.getCopy());
         if(!lista.contains(e))
             lista.add(e.getCopy());
     }
 
-    public void moveEnd(Coor in){
+    public void moveEnd(CoorD in){
         if(!lista.contains(in)){
             lista.add(in.getCopy());
             e=in.getCopy();
@@ -29,7 +29,7 @@ public class BlobSegment extends Segment {
     public double getMaxDist(){
         return Double.max(getDistanza(upper()),getDistanza(downer()));
     }
-    private Coor upper(){
+    private CoorD upper(){
         double maxDist=getDistanza(lista.get(0));
         int max=0;
         for(int i=1;i<lista.size();i++){
@@ -40,7 +40,7 @@ public class BlobSegment extends Segment {
         }
         return lista.get(max).getCopy();
     }
-    private Coor downer(){
+    private CoorD downer(){
         double maxDist=getDistanza(lista.get(0));
         int max=0;
         for(int i=1;i<lista.size();i++){
@@ -51,8 +51,8 @@ public class BlobSegment extends Segment {
         }
         return lista.get(max).getCopy();
     }
-    public boolean isExtern(Coor p){
-        Coor h,d;
+    public boolean isExtern(CoorD p){
+        CoorD h,d;
         if(s.y>e.y){
             h=s;
             d=e;

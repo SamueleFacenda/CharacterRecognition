@@ -33,7 +33,7 @@ public class VectorialImageGenerator extends VectorialImage{
         diagonalHop=Math.sqrt(Math.pow((double)grid.length/2+2, 2)+Math.pow((double)grid[0].length/2+2,2 ));
         int i=0;
         while(!grid[(i/ grid[0].length)][i%grid[0].length]) i++;
-        Coor start=new Coor((i/ grid[0].length),i%grid[0].length);
+        CoorD start=new CoorD((i/ grid[0].length),i%grid[0].length);
         generateBlobSegmentAtStart(start);
         toRemove=new LinkedList<>();
         generateArchs();
@@ -64,7 +64,7 @@ public class VectorialImageGenerator extends VectorialImage{
      * @param orarSense se il segmento deve essere in senso antiorario o orario(radainti maggoiri o minori)
      * @return lista di segmenti ad arco a partire dalla cella
      */
-    private LinkedList<Segment> findCurveSegment(Coor start, double radDirection, boolean orarSense){
+    private LinkedList<Segment> findCurveSegment(CoorD start, double radDirection, boolean orarSense){
         //currentList è un buffer per le liste generate da ogni segmento
         LinkedList<Segment> out=null,currentList = null;
         //se il segmento è simile ma al contrario
@@ -72,9 +72,9 @@ public class VectorialImageGenerator extends VectorialImage{
         //controlla per ogni segmento
         for (Segment current:
              segmentList) {
-            isStorto=Coor.areNear(start,current.e,0.05*grid.length);
+            isStorto= CoorD.areNear(start,current.e,0.05*grid.length);
             //se è simile ma storto o se è simile
-            if(isStorto || Coor.areNear(start,current.s,0.05*grid.length)){
+            if(isStorto || CoorD.areNear(start,current.s,0.05*grid.length)){
                 //se è storto lo gira
                 if(isStorto)
                     current=new Segment(current.e,current.s);
@@ -146,11 +146,11 @@ public class VectorialImageGenerator extends VectorialImage{
      * launcher del metodo ricorsivo per generare segmenti in tutte le direzioni
      * @param s la cella da cui partire
      */
-    private void generateBlobSegmentAtStart(Coor s){
+    private void generateBlobSegmentAtStart(CoorD s){
         Iterator<Segment> iter;
         BlobSegment blobSegBuffer;
         //in ogni direzione
-        for (Coor c :
+        for (CoorD c :
                 getAroundDirection(s, 0,true)) {
             //il metodo getArodundDirecton resitituisce null se la cella è fuori dalla griglia o non è nera
             if(c!=null){
@@ -174,23 +174,21 @@ public class VectorialImageGenerator extends VectorialImage{
         //controlla se ha superato il limite di hop massimi(distanza da vertice a vertice divisa due nella griglia)
         if(ttl>=0) {
             //calcola la pendenza attuale del segmento
-            double radAng=Coor.calcRad(bs.s,bs.e);
+            double radAng= CoorD.calcRad(bs.s,bs.e);
             //creo la lista in cui inseriere i segmenti generati da questo segmento nelle varie direzioni
             LinkedList<BlobSegment> currentList = new LinkedList<>();
             BlobSegment blobSegBuffer;
             //controlla intorno per tutte le coordinate valide
-            for (Coor c :
-                    getAroundDirection(bs.e, radAng,false)) {
-                if(c!=null){
-                    //crea un nuovo BlobSegment copia e sposta la fine alla Coor corrente
-                    blobSegBuffer = bs.getCopy();
-                    blobSegBuffer.moveEnd(c);
-                    //se il segmento è più spesso di tre(due hop in diagonale)identifica una curva e lancia un generatore in quella direzione
-                    if (blobSegBuffer.getMaxDist() > 3)
-                        addAfterCheck(generateSegmentRecursive(new BlobSegment(bs.e,c),diagonalHop).toSegment());
-                    else //aggiunge alla lista corrente il segmento generato da quella cella, diminuisce di uno il ttl per questa generazione
-                        currentList.add(generateSegmentRecursive(blobSegBuffer, ttl - 1));
-                }
+            for (CoorD c :
+                 getAroundDirection(bs.e, radAng,false)) {
+                //crea un nuovo BlobSegment copia e sposta la fine alla Coor corrente
+                blobSegBuffer = bs.getCopy();
+                blobSegBuffer.moveEnd(c);
+                //se il segmento è più spesso di tre(due hop in diagonale)identifica una curva e lancia un generatore in quella direzione
+                if (blobSegBuffer.getMaxDist() > 3)
+                    addAfterCheck(generateSegmentRecursive(new BlobSegment(bs.e,c),diagonalHop).toSegment());
+                else //aggiunge alla lista corrente il segmento generato da quella cella, diminuisce di uno il ttl per questa generazione
+                    currentList.add(generateSegmentRecursive(blobSegBuffer, ttl - 1));
             }
             //cerco il segmento più lungo, se
             if (currentList.size() != 0) {
@@ -229,31 +227,26 @@ public class VectorialImageGenerator extends VectorialImage{
      * @param isAllOk bypassa il check dei radianti, così vengono ritornate le coordinate a 360º
      * @return le coordinate accettabili e presenti nella griglia intorno alla cella inserita da parametro
      */
-    private Coor[] getAroundDirection(Coor center,double radAng,boolean isAllOk){
+    private LinkedList<CoorD> getAroundDirection(CoorD center, double radAng, boolean isAllOk){
         //delta rad è il valore di metà zona non accettabile, prendo le coordinate opposte(mezzo giro dopo, +PI), aggiungendo e togliendo deltaRad
         double startNoZone=radAng+Math.PI-deltaRad,endNoZone=radAng+Math.PI+deltaRad;
-        int count=0;
-        Coor[] out=new Coor[16];
-        Coor check;
+        LinkedList<CoorD> out=new LinkedList<>();
+        CoorD check;
         for (double i = center.x-2; i < center.x+3; i++){
-            check=new Coor(i,center.y+2);
+            check=new CoorD(i,center.y+2);
             if(checkCoorInDirecton(center,check,startNoZone,endNoZone,isAllOk))
-                out[count]=check;
-            count++;
-            check=new Coor(i,center.y-2);
+                out.add(check);
+            check=new CoorD(i,center.y-2);
             if(checkCoorInDirecton(center,check,startNoZone,endNoZone,isAllOk))
-                out[count]=check;
-            count++;
+                out.add(check);
         }
         for (double i = center.y-1; i < center.y+2; i++){
-            check=new Coor(center.x-2,i);
+            check=new CoorD(center.x-2,i);
             if(checkCoorInDirecton(center,check,startNoZone,endNoZone,isAllOk))
-                out[count]=check;
-            count++;
-            check=new Coor(center.x+2,i);
+                out.add(check);
+            check=new CoorD(center.x+2,i);
             if(checkCoorInDirecton(center,check,startNoZone,endNoZone,isAllOk))
-                out[count]=check;
-            count++;
+                out.add(check);
         }
         return out;
     }
@@ -280,8 +273,8 @@ public class VectorialImageGenerator extends VectorialImage{
      * @param isAllOk booleano per il bypass del controllo sui radianti
      * @return se la cella soddisfa tutti i criteri richiesti
      */
-    private boolean checkCoorInDirecton(Coor center,Coor check,double startNoZone,double endNoZone,boolean isAllOk){
-        double radCheck=Coor.calcRad(center,check);
+    private boolean checkCoorInDirecton(CoorD center, CoorD check, double startNoZone, double endNoZone, boolean isAllOk){
+        double radCheck= CoorD.calcRad(center,check);
         //controllo che sia compreso nella griglia e la cella si piena(pixel nero)
         boolean out=check.x>=0 && check.x<grid[0].length && check.y>=0 && check.y< grid.length && grid[DoubleUtils.toInt(check.y)][DoubleUtils.toInt(check.x)];
         return out && (isAllOk || !isGhegenuber(radCheck,startNoZone,endNoZone));
