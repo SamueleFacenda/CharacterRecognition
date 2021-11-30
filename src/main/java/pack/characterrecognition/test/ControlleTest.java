@@ -30,10 +30,9 @@ public class ControlleTest {
         b.add(new CoorD(10,0));
 
         VectorialImageGenerator v=new VectorialImageGenerator(b);
-        //v.scale(10);
         VectorialMap vi=new VectorialMap(v);
-        vi.scale(10);
         vi.enchant();
+        vi.scale(10);
         gruppo.getChildren().add(new ImageView(vi.toImage()));
     }
     public void addImg(Image in){
@@ -43,6 +42,10 @@ public class ControlleTest {
         VectorialImage vi=new VectorialImageGenerator(b);
         System.out.println(vi);
         vi.scale(10);
-        gruppo.getChildren().add(new ImageView(vi.toImage()));
+        try{
+            gruppo.getChildren().add(new ImageView(vi.toImage()));
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("non ci sono punti");
+        }
     }
 }

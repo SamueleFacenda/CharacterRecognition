@@ -46,7 +46,7 @@ public class VectorialMap extends VectorialImage{
             if(further.y>height)
                 height=further.y;
         }
-        double smallCoefficent=7,angleCoefficent=Math.PI*0.25;
+        double smallCoefficent=5,angleCoefficent=Math.PI*0.25;
         for (Segment v:
                 segmentList)
             checkFormForPoints(v,smallCoefficent);
