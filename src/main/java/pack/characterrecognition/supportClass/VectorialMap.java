@@ -1,9 +1,18 @@
 package pack.characterrecognition.supportClass;
 
+import pack.characterrecognition.supportClass.figures.Arch;
+import pack.characterrecognition.supportClass.figures.CoorD;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Objects;
-
+/**
+ * Classe mappa vettoriale, i vertici dei segmenti sono punti della mappa(GraphPoint), con salvati i segmenti che partono e
+ * arrivano lí.
+ * Questo perché cosí ho fatto i metodi per "abbellire" l'immagine, unisco i segmenti in linea dritte.
+ * @author Samuele Facenda
+ }
+*/
 public class VectorialMap extends VectorialImage{
     private LinkedList<GraphPoint> points;
     public VectorialMap(){
@@ -16,8 +25,12 @@ public class VectorialMap extends VectorialImage{
         for(Arch a:in.archList)archList.add(a.getCopy());
         for(Segment a:in.segmentList) segmentList.add(a.getCopy());
     }
+    /**
+     * abbellisco l'immagine: genero i GraphPoints, unisco i punti vicini e unisco i segmenti contigui
+    */
     public void enchant(){
         double height=0,width=0;
+        //cerco il punto piú alto e piú largo
         for (Segment v:
                 segmentList) {
             if(v.s.x>width)
@@ -30,6 +43,7 @@ public class VectorialMap extends VectorialImage{
                 height=v.e.y;
         }
         CoorD further;
+        //idem, prendo in cosiderazone anche il punto sull'arco piú lontano
         for (Arch v:
                 archList) {
             if(v.s.x>width)
@@ -46,6 +60,7 @@ public class VectorialMap extends VectorialImage{
             if(further.y>height)
                 height=further.y;
         }
+        //angleCoefficent é pari a un ottavo di giro
         double smallCoefficent=5,angleCoefficent=Math.PI*0.25;
         for (Segment v:
                 segmentList)
@@ -58,12 +73,19 @@ public class VectorialMap extends VectorialImage{
             checkForLinearVector(gp,angleCoefficent);
     }
 
+    /**
+     * controllo le estremitá del segmento, se sono vicine a un punto della mappa, se non lo sono ne faccio uno nuovo apposta
+     * @param in segmento da controllare
+     * @param smallCoefficent coefficiente di poca distanza: i punti con distanza minore vengono considerati uguali e uniti
+     */
     private void checkFormForPoints(Segment in, double smallCoefficent){
         Iterator<GraphPoint> i=points.iterator();
         GraphPoint gp;
         boolean notSFind=true,notEFind=true;
+        //cerca in tutti i punti finché o ho finito i punti o ho trovato un punto sia per l'inizio che per la fine
         while(i.hasNext()&&(notSFind||notEFind)){
             gp=i.next();
+            //se sono vicini lo aggiunge
             if(notSFind&& CoorD.areNear(in.s,gp,smallCoefficent)){
                 gp.addStart(in);
                 in.setS(gp);
@@ -75,6 +97,7 @@ public class VectorialMap extends VectorialImage{
                 notEFind=false;
             }
         }
+        //se non ha trovato un punto per l'inizio ne fa uno nuovo e aggiunge nella lista dell'inizio questo segmento
         if(notEFind){
             GraphPoint added=new GraphPoint(in.e);
             added.addEnd(in);
@@ -86,19 +109,34 @@ public class VectorialMap extends VectorialImage{
             points.add(added);
         }
     }
+
+    /**
+     * metodo che cerca il un graphpoint se ci sono segmenti in linea semi retta
+     * @param gp punto da controllare
+     * @param angleCoefficent coefficiente di scarto in radianti di angolo di pendenza dei due segmenti
+     */
     public void checkForLinearVector(GraphPoint gp, double angleCoefficent) {
+        //per ogni segmento che iniza da qui
         for (Segment v:
                 gp.getStart()){
+            //controllo tutti quelli che finiscono qui
             for (Segment second:
                     gp.getStart()){
+                //se sono segemnti e non archi e sono in linea retta
                 if(v!=second&& !(v instanceof Arch) && !(second instanceof Arch) && Segment.areSemiContigous(v,second,angleCoefficent)){
+                    //creo il nuovo segento
                     Segment due=new Segment(v.e,second.e);
+                    //muovo il veccho punto sopra a questo nuovo segemnto
                     gp.move(due.getNearestPointOnThis(gp));
+                    //tolgo i segemnti vecchi dal vecchio punto
                     gp.getStart().remove(v);
                     gp.getStart().remove(second);
+                    //li tolgo anche dalla lista totale di segmenti
                     segmentList.remove(v);
                     segmentList.remove(second);
+                    //aggiungo quello nuovo
                     segmentList.add(due);
+                    //cerco i punti in cui finivano i due segmenti, li tolgo da lí
                     for (GraphPoint punto:
                          points) {
                         if(punto.getEnd().contains(v)){
@@ -112,6 +150,7 @@ public class VectorialMap extends VectorialImage{
                     }
                 }
             }
+            //uguele per quelli che finiscono lí
             for (Segment second:
                     gp.getEnd()){
                 if(v!=second&& !(v instanceof Arch) && !(second instanceof Arch) && Segment.areSemiContigous(v,second,angleCoefficent)){
@@ -136,6 +175,7 @@ public class VectorialMap extends VectorialImage{
                 }
             }
         }
+        //uguale per i segmenti che finiscono lí
         for (Segment v:
                 gp.getEnd()) {
             for (Segment second:
@@ -186,13 +226,31 @@ public class VectorialMap extends VectorialImage{
             }
         }
     }
+
+    /**
+     * scala le dimensioni dell'immagine vettoriale secondo la frazione inserita
+     * @param fraction indice di scala(1 é uguale, 2 raddoppia, 0.5 dimezza...)
+     */
     public void scale(double fraction){
+        //scalo tutti i punti
         for (GraphPoint gp: points)
             gp.move(new CoorD(gp.x*fraction,gp.y*fraction));
     }
+
+    /**
+     * scalo in base all'altezza che voglio ottenere
+     * @param in altezza che voglio
+     */
     public void scalePerHeight(double in){
         scale(in/getHeight());
     }
+
+    /**
+     * calcolo la similitudine di due mappe vettoriali(indice di ritorno double)
+     * @param uno prima mappa da confrontare
+     * @param due seconda mappa da confrontare
+     * @return indice in double di similitudine(max 1)
+     */
     static public double calcSimil(VectorialMap uno,VectorialMap due){
         /*uno.scale(100.0/uno.getHeight());
         due.scale(100.0/due.getHeight());
@@ -212,11 +270,14 @@ public class VectorialMap extends VectorialImage{
         //return confrontGrahpGrid(generateGrid(uno.points),generateGrid(due.points))?1:0;
         double val=0,minCoefficent=5;
         Iterator<Segment> segUno=uno.segmentList.iterator(),segDue=due.segmentList.iterator();
+        //controllo se tutti i segmenti sono simili(se le immagini sono simili l'ordine dovrebbe essere uguale
         while(segUno.hasNext()&&segDue.hasNext())
             if(Segment.areSimilar(segUno.next(), segDue.next(), minCoefficent)) val++;
         Iterator<Arch> arcUno=uno.archList.iterator(),arcDue=due.archList.iterator();
+        //idem per gli archi
         while(arcUno.hasNext()&&arcDue.hasNext())
             if(Segment.areSimilar(segUno.next(), segDue.next(), minCoefficent)) val++;
+        //proporzione con il numero totale di segemnti e arch
         return  val/(Integer.max(uno.segmentList.size(),due.segmentList.size())+Integer.max(uno.archList.size(),due.archList.size()));
     }
     private static boolean haveSameBridges(LinkedList<GraphPoint> uno,LinkedList<GraphPoint> due){

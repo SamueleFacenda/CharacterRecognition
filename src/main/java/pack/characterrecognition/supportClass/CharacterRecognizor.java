@@ -1,7 +1,7 @@
 package pack.characterrecognition.supportClass;
 
 import javafx.scene.image.WritableImage;
-import pack.characterrecognition.supportClass.VectorialMap;
+import pack.characterrecognition.supportClass.saves.BufferedSaver;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

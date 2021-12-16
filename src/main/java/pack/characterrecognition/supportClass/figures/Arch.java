@@ -1,4 +1,6 @@
-package pack.characterrecognition.supportClass;
+package pack.characterrecognition.supportClass.figures;
+
+import pack.characterrecognition.supportClass.Segment;
 
 import java.util.LinkedList;
 import java.util.Objects;

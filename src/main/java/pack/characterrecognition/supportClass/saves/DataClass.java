@@ -1,4 +1,6 @@
-package pack.characterrecognition.supportClass;
+package pack.characterrecognition.supportClass.saves;
+
+import pack.characterrecognition.supportClass.saves.CharacterSaves;
 
 public class DataClass {
     protected CharacterSaves[] lista;

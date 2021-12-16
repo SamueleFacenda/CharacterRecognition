@@ -3,6 +3,7 @@ package pack.characterrecognition.supportClass;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.paint.Color;
+import pack.characterrecognition.supportClass.figures.CoorD;
 
 import java.util.LinkedList;
 

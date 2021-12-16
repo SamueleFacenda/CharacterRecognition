@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import pack.characterrecognition.supportClass.*;
+import pack.characterrecognition.supportClass.figures.CoorD;
 
 import java.io.IOException;
 

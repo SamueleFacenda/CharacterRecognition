@@ -1,9 +1,9 @@
-package pack.characterrecognition.supportClass;
+package pack.characterrecognition.supportClass.saves;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
-import javafx.scene.Scene;
+import pack.characterrecognition.supportClass.VectorialMap;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -24,7 +24,7 @@ public class BufferedSaver {
         if(data==null)
             data=new DataClass();
     }
-    public void add(char c,VectorialMap added) throws IOException {
+    public void add(char c, VectorialMap added) throws IOException {
         data.get(c).add(added);
     }
     public void writeFileAndClose() throws IOException {

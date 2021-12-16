@@ -1,5 +1,7 @@
-package pack.characterrecognition.supportClass;
+package pack.characterrecognition.supportClass.figures;
 
+
+import pack.characterrecognition.supportClass.figures.CoorD;
 
 /**
  * classe che indica le coordinate di un punto 2d

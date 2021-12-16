@@ -1,4 +1,4 @@
-package pack.characterrecognition.supportClass;
+package pack.characterrecognition.supportClass.other;
 
 /**
  * classe di utilità per ovviare al problema dei double sui confronti, il

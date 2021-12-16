@@ -1,4 +1,6 @@
-package pack.characterrecognition.supportClass;
+package pack.characterrecognition.supportClass.figures;
+
+import pack.characterrecognition.supportClass.other.DoubleUtils;
 
 import java.util.Objects;
 
@@ -24,7 +26,7 @@ public class CoorI {
         this.y = y;
     }
     public CoorI(CoorD in){
-        x=DoubleUtils.toInt(Math.floor(in.x));
+        x= DoubleUtils.toInt(Math.floor(in.x));
         y=DoubleUtils.toInt(Math.floor(in.y));
     }
 

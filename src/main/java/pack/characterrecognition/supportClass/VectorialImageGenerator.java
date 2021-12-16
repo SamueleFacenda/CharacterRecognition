@@ -1,5 +1,8 @@
 package pack.characterrecognition.supportClass;
 
+import pack.characterrecognition.supportClass.figures.CoorD;
+import pack.characterrecognition.supportClass.other.DoubleUtils;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 

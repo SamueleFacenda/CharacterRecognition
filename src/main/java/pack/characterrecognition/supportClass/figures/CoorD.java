@@ -1,4 +1,6 @@
-package pack.characterrecognition.supportClass;
+package pack.characterrecognition.supportClass.figures;
+
+import pack.characterrecognition.supportClass.other.DoubleUtils;
 
 import java.util.Objects;
 
@@ -8,11 +10,11 @@ import java.util.Objects;
  * double
  * @author Samuele Facenda
  */
-public class CoorD implements Coor{
+public class CoorD implements Coor {
     /**
      * la posizione sull'asse x o y del punto
      */
-    protected double x,y;
+    public double x,y;
 
     /**
      * costruttore semplice

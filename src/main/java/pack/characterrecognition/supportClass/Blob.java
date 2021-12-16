@@ -1,5 +1,8 @@
 package pack.characterrecognition.supportClass;
 
+import pack.characterrecognition.supportClass.figures.CoorD;
+import pack.characterrecognition.supportClass.other.DoubleUtils;
+
 import java.util.LinkedList;
 
 /**
@@ -23,7 +26,7 @@ public class Blob {
     public int getUpper(){
         int max=0;
         for(CoorD c:lista)
-            if(c.y>max) max=DoubleUtils.toInt(Math.ceil(c.y));
+            if(c.y>max) max= DoubleUtils.toInt(Math.ceil(c.y));
          return max;
     }
     public int getDowner(){

@@ -4,6 +4,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+import pack.characterrecognition.supportClass.figures.Arch;
+import pack.characterrecognition.supportClass.figures.CoorD;
 
 import java.util.LinkedList;
 import java.util.Objects;
@@ -52,7 +54,7 @@ public class VectorialImage {
             minX=archList.get(0).getXE();
             minY=archList.get(0).getXE();
         }
-        //trovo gli angoli dell'immagine(naggiore x e y tra tutti i vertici
+        //trovo gli angoli dell'immagine(maggiore x e y tra tutti i vertici)
         for(Segment v: segmentList){
             if(v.s.x>maxX)
                 maxX=v.s.x;
@@ -123,6 +125,7 @@ public class VectorialImage {
         PixelWriter pi=img.getPixelWriter();
         for(Arch in:archList) copyCoors(minY, minX, pi, in);
         for(Segment in: segmentList) copyCoors(minY, minX, pi, in);
+        for(Segment in:segmentList) System.out.println(in);
         return img;
     }
 

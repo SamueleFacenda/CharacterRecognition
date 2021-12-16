@@ -1,7 +1,7 @@
 package pack.characterrecognition.test;
 
 import pack.characterrecognition.supportClass.Blob;
-import pack.characterrecognition.supportClass.CoorD;
+import pack.characterrecognition.supportClass.figures.CoorD;
 import pack.characterrecognition.supportClass.VectorialImageGenerator;
 import pack.characterrecognition.supportClass.VectorialMap;
 

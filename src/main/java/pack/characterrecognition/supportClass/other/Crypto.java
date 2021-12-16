@@ -1,4 +1,4 @@
-package pack.characterrecognition.supportClass;
+package pack.characterrecognition.supportClass.other;
 
 public class Crypto {
     public static String code(String frase,String key){
